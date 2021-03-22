@@ -18,7 +18,7 @@ public class UsrArticleController {
 
 	public UsrArticleController() {
 		// 맴버 변수 초기화
-		articlesLastId=0;
+		articlesLastId = 0;
 		articles = new ArrayList<>();
 		// 게시물 다섯개 생성
 		articles.add(new Article(++articlesLastId, "2020-12-12 12:12:12", "제목1", "내용1"));
@@ -44,21 +44,22 @@ public class UsrArticleController {
 	@ResponseBody
 	public Map<String, Object> doAdd(String regDate, String title, String body) {
 		articles.add(new Article(++articlesLastId, regDate, title, body));
-		Map<String,Object> rs = new HashMap<>();
+		Map<String, Object> rs = new HashMap<>();
 		rs.put("resultCode", "S-1");
 		rs.put("msg", "성공하였습니다");
 		rs.put("id", articlesLastId);
 		return rs;
 	}
+
 	@RequestMapping("user/article/doDelete")
 	@ResponseBody
 	public Map<String, Object> doDelete(int id) {
 		boolean deleteArticleRs = deleteArticle(id);
-		Map<String,Object> rs = new HashMap<>();
-		if(deleteArticleRs) {
+		Map<String, Object> rs = new HashMap<>();
+		if (deleteArticleRs) {
 			rs.put("resultCode", "S-1");
 			rs.put("msg", "성공하였습니다");
-		}else {
+		} else {
 			rs.put("resultCode", "F-1");
 			rs.put("msg", "해당게시글은 존재하지않습니다");
 		}
@@ -66,12 +67,35 @@ public class UsrArticleController {
 	}
 
 	private boolean deleteArticle(int id) {
-		for(Article article:articles) {
-			if(article.getId()==id) {
+		for (Article article : articles) {
+			if (article.getId() == id) {
 				articles.remove(article);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	@RequestMapping("user/article/doModify")
+	@ResponseBody
+	public Map<String, Object> doModify(int id, String title, String body) {
+		Article selArticle = null;
+		for (Article article : articles) {
+			if(article.getId()==id) {
+				selArticle=article;
+				selArticle.setTitle(title);
+				selArticle.setBody(body);
+				break;
+			}
+		}
+		Map<String, Object> rs = new HashMap<>();
+		if (selArticle==null) {
+			rs.put("resultCode", "F-1");
+			rs.put("msg", String.format("%d번 게시물은 존재하지 않습니다.", id));
+		} else {
+			rs.put("resultCode", "S-1");
+			rs.put("msg", String.format("%d번 게시글이 수정되었습니다.", id));
+		}
+		return rs;
 	}
 }
