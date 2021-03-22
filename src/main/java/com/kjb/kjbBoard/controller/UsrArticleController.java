@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kjb.kjbBoard.dto.Article;
+import com.kjb.kjbBoard.util.Util;
 
 @Controller
 public class UsrArticleController {
@@ -21,11 +22,11 @@ public class UsrArticleController {
 		articlesLastId = 0;
 		articles = new ArrayList<>();
 		// 게시물 다섯개 생성
-		articles.add(new Article(++articlesLastId, "2020-12-12 12:12:12", "제목1", "내용1"));
-		articles.add(new Article(++articlesLastId, "2020-12-13 12:12:12", "제목2", "내용2"));
-		articles.add(new Article(++articlesLastId, "2020-12-14 12:12:12", "제목3", "내용3"));
-		articles.add(new Article(++articlesLastId, "2020-12-15 12:12:12", "제목4", "내용4"));
-		articles.add(new Article(++articlesLastId, "2020-12-16 12:12:12", "제목5", "내용5"));
+		articles.add(new Article(++articlesLastId, "2020-12-12 12:12:12", "2020-12-12 12:12:12", "제목1", "내용1"));
+		articles.add(new Article(++articlesLastId, "2020-12-13 12:12:12", "2020-12-12 12:12:12", "제목2", "내용2"));
+		articles.add(new Article(++articlesLastId, "2020-12-14 12:12:12", "2020-12-12 12:12:12", "제목3", "내용3"));
+		articles.add(new Article(++articlesLastId, "2020-12-15 12:12:12", "2020-12-12 12:12:12", "제목4", "내용4"));
+		articles.add(new Article(++articlesLastId, "2020-12-16 12:12:12", "2020-12-12 12:12:12", "제목5", "내용5"));
 	}
 
 	@RequestMapping("user/article/detail")
@@ -42,8 +43,10 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/doAdd")
 	@ResponseBody
-	public Map<String, Object> doAdd(String regDate, String title, String body) {
-		articles.add(new Article(++articlesLastId, regDate, title, body));
+	public Map<String, Object> doAdd(String title, String body) {
+		String regDate = Util.getNowDateStr();
+		String updateDate = regDate;
+		articles.add(new Article(++articlesLastId, regDate, updateDate, title, body));
 		Map<String, Object> rs = new HashMap<>();
 		rs.put("resultCode", "S-1");
 		rs.put("msg", "성공하였습니다");
@@ -81,15 +84,16 @@ public class UsrArticleController {
 	public Map<String, Object> doModify(int id, String title, String body) {
 		Article selArticle = null;
 		for (Article article : articles) {
-			if(article.getId()==id) {
-				selArticle=article;
+			if (article.getId() == id) {
+				selArticle = article;
+				selArticle.setUpdateDate(Util.getNowDateStr());
 				selArticle.setTitle(title);
 				selArticle.setBody(body);
 				break;
 			}
 		}
 		Map<String, Object> rs = new HashMap<>();
-		if (selArticle==null) {
+		if (selArticle == null) {
 			rs.put("resultCode", "F-1");
 			rs.put("msg", String.format("%d번 게시물은 존재하지 않습니다.", id));
 		} else {
