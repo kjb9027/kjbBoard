@@ -2,13 +2,13 @@ package com.kjb.kjbBoard.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kjb.kjbBoard.dto.Article;
+import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.util.Util;
 
 @Controller
@@ -42,21 +42,21 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/doAdd")
 	@ResponseBody
-	public Map<String, Object> doAdd(String title, String body) {
+	public ResultData doAdd(String title, String body) {
 		String regDate = Util.getNowDateStr();
 		String updateDate = regDate;
 		articles.add(new Article(++articlesLastId, regDate, updateDate, title, body));
-		return Util.mapOf("resultCode", "S-1", "msg", "성공하였습니다", "id", articlesLastId);
+		return new ResultData("S-1", "성공하였습니다", "id", articlesLastId);
 	}
 
 	@RequestMapping("user/article/doDelete")
 	@ResponseBody
-	public Map<String, Object> doDelete(int id) {
+	public ResultData doDelete(int id) {
 		boolean deleteArticleRs = deleteArticle(id);
 		if (deleteArticleRs) {
-			return Util.mapOf("resultCode", "S-1", "msg", "성공하였습니다");
+			return new ResultData( "S-1", "성공하였습니다");
 		} else {
-			return Util.mapOf("resultCode", "F-1", "msg", "해당게시글은 존재하지않습니다");
+			return new ResultData( "F-1", "해당게시글은 존재하지않습니다");
 		}
 	}
 
@@ -72,7 +72,7 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/doModify")
 	@ResponseBody
-	public Map<String, Object> doModify(int id, String title, String body) {
+	public ResultData doModify(int id, String title, String body) {
 		Article selArticle = null;
 		for (Article article : articles) {
 			if (article.getId() == id) {
@@ -84,9 +84,9 @@ public class UsrArticleController {
 			}
 		}
 		if (selArticle == null) {
-			return Util.mapOf("resultCode", "F-1", "msg", String.format("%d번 게시물은 존재하지 않습니다.", id));
+			return new ResultData("F-1", String.format("%d번 게시물은 존재하지 않습니다.", id));
 		} else {
-			return Util.mapOf("resultCode", "S-1-1", "msg", String.format("%d번 게시글이 수정되었습니다.", id));
+			return new ResultData("S-1", String.format("%d번 게시글이 수정되었습니다.", id));
 		}
 	}
 }
