@@ -19,7 +19,7 @@ public class UsrArticleController {
 	@RequestMapping("user/article/detail")
 	@ResponseBody
 	public Article showDetail(int id) {
-		return articleServise.getAticle(id);
+		return articleServise.getArticle(id);
 	}
 
 	@RequestMapping("user/article/list")
