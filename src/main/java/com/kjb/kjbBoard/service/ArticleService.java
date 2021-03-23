@@ -35,8 +35,37 @@ public class ArticleService {
 		return null;
 	}
 
-	public List<Article> getArticles() {
-		return articles;
+	public List<Article> getArticles(String keywordType, String keyword) {
+		if (keywordType != null) {
+			keywordType = keywordType.trim();
+		}
+		if (keywordType == null || keywordType.length() == 0) {
+			keywordType = "titleAndBody";
+		}
+		if (keyword != null && keyword.length() == 0) {
+			keyword = null;
+		}
+		if (keyword != null) {
+			keyword = keyword.trim();
+		}
+		if (keyword == null) {
+			return articles;
+		}
+		List<Article> filterList = new ArrayList<>();
+		for (Article article : articles) {
+			boolean contains = false;
+			if (keywordType.equals("title")) {
+				contains = article.getTitle().contains(keyword);
+			} else if (keywordType.equals("body")) {
+				contains = article.getBody().contains(keyword);
+			} else {
+				contains = article.getTitle().contains(keyword) || article.getBody().contains(keyword);
+			}
+			if (contains) {
+				filterList.add(article);
+			}
+		}
+		return filterList;
 	}
 
 	public ResultData add(String title, String body) {
@@ -53,7 +82,10 @@ public class ArticleService {
 		return new ResultData("S-1", "성공하였습니다", "id", id);
 	}
 
-	public ResultData delete(int id) {
+	public ResultData delete(Integer id) {
+		if (id == null) {
+			return new ResultData("F-1", "id를 입력해주세요.");
+		}
 		if (getAticle(id) != null) {
 			for (Article article : articles) {
 				if (article.getId() == id) {
@@ -67,7 +99,16 @@ public class ArticleService {
 		}
 	}
 
-	public ResultData modify(int id, String title, String body) {
+	public ResultData modify(Integer id, String title, String body) {
+		if (id == null) {
+			return new ResultData("F-1", "id를 입력해주세요.");
+		}
+		if (title == null) {
+			return new ResultData("F-2", "title을 입력해주세요.");
+		}
+		if (body == null) {
+			return new ResultData("F-3", "body을 입력해주세요.");
+		}
 		if (getAticle(id) != null) {
 			Article selArticle = null;
 			for (Article article : articles) {
