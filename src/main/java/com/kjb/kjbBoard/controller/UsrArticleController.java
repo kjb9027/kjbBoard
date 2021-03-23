@@ -1,7 +1,6 @@
 package com.kjb.kjbBoard.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,26 +46,18 @@ public class UsrArticleController {
 		String regDate = Util.getNowDateStr();
 		String updateDate = regDate;
 		articles.add(new Article(++articlesLastId, regDate, updateDate, title, body));
-		Map<String, Object> rs = new HashMap<>();
-		rs.put("resultCode", "S-1");
-		rs.put("msg", "성공하였습니다");
-		rs.put("id", articlesLastId);
-		return rs;
+		return Util.mapOf("resultCode", "S-1", "msg", "성공하였습니다", "id", articlesLastId);
 	}
 
 	@RequestMapping("user/article/doDelete")
 	@ResponseBody
 	public Map<String, Object> doDelete(int id) {
 		boolean deleteArticleRs = deleteArticle(id);
-		Map<String, Object> rs = new HashMap<>();
 		if (deleteArticleRs) {
-			rs.put("resultCode", "S-1");
-			rs.put("msg", "성공하였습니다");
+			return Util.mapOf("resultCode", "S-1", "msg", "성공하였습니다");
 		} else {
-			rs.put("resultCode", "F-1");
-			rs.put("msg", "해당게시글은 존재하지않습니다");
+			return Util.mapOf("resultCode", "F-1", "msg", "해당게시글은 존재하지않습니다");
 		}
-		return rs;
 	}
 
 	private boolean deleteArticle(int id) {
@@ -92,14 +83,10 @@ public class UsrArticleController {
 				break;
 			}
 		}
-		Map<String, Object> rs = new HashMap<>();
 		if (selArticle == null) {
-			rs.put("resultCode", "F-1");
-			rs.put("msg", String.format("%d번 게시물은 존재하지 않습니다.", id));
+			return Util.mapOf("resultCode", "F-1", "msg", String.format("%d번 게시물은 존재하지 않습니다.", id));
 		} else {
-			rs.put("resultCode", "S-1");
-			rs.put("msg", String.format("%d번 게시글이 수정되었습니다.", id));
+			return Util.mapOf("resultCode", "S-1-1", "msg", String.format("%d번 게시글이 수정되었습니다.", id));
 		}
-		return rs;
 	}
 }
