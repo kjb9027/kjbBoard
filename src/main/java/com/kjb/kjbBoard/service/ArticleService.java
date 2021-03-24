@@ -42,25 +42,25 @@ public class ArticleService {
 
 	public ResultData add(Map<String,Object> param) {
 		if(param.get("title")==null) {
-			new ResultData("F-1", "title을 입력해주세요");
+			return new ResultData("F-1", "title을 입력해주세요.");
 		}
 		if(param.get("body")==null) {
-			new ResultData("F-2", "body를 입력해주세요");
+			return new ResultData("F-1", "body를 입력해주세요.");
 		}
 		System.out.println(param);
 		articleDao.addArticle(param);
 		System.out.println(param);
 		int id = Util.getAsInt(param.get("id"),0);
-		return new ResultData("S-1", "게시글이 작성되었습니다 ", "id", id);
+		return new ResultData("S-1", "게시글이 작성되었습니다.", "id", id);
 	}
 
 	public ResultData delete(int id) {
 		articleDao.deleteArticle(id);
-		return new ResultData("S-1", "게시글이 삭제되었습니다 ", "id", id);
+		return new ResultData("S-1", "게시글이 삭제되었습니다.", "id", id);
 	}
 
 	public ResultData modify(int id, String title, String body) {
 		articleDao.modifyArticle(id, title, body);
-		return new ResultData("S-1", "게시글이 수정되었습니다 ", "id", id);
+		return new ResultData("S-1", "게시글이 수정되었습니다.", "id", id);
 	}
 }
