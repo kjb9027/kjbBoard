@@ -14,7 +14,8 @@
 		WHERE 1
 		ORDER BY ID DESC
 	</select>
-	<insert id="addArticle">
+	<insert id="addArticle" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO article
 		SET regDate = NOW(),
 		updateDate = NOW(),
 		title = #{title},

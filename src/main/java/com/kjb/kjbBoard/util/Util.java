@@ -1,5 +1,6 @@
 package com.kjb.kjbBoard.util;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -11,13 +12,14 @@ public class Util {
 		Date time = new Date();
 		return format1.format(time);
 	}
+
 	public static Map<String, Object> mapOf(Object... args) {
 		if (args.length % 2 != 0) {
 			throw new IllegalArgumentException("인자를 짝수개 입력해주세요.");
 		}
 		int size = args.length / 2;
-		Map<String,Object> map = new LinkedHashMap<>();
-		
+		Map<String, Object> map = new LinkedHashMap<>();
+
 		for (int i = 0; i < size; i++) {
 			int keyIdx = i * 2;
 			int valueIdx = keyIdx + 1;
@@ -32,5 +34,23 @@ public class Util {
 			map.put(key, value);
 		}
 		return map;
+	}
+
+	public static int getAsInt(Object object, int defaultValue) {
+		if (object instanceof BigInteger) {
+			return ((BigInteger) object).intValue();
+		} else if (object instanceof Double) {
+			return (int) Math.floor((double) object);
+		} else if (object instanceof Float) {
+			return (int) Math.floor((float) object);
+		} else if (object instanceof Long) {
+			return (int) object;
+		} else if (object instanceof Integer) {
+			return (int) object;
+		} else if (object instanceof String) {
+			return Integer.parseInt((String) object);
+		}
+
+		return defaultValue;
 	}
 }

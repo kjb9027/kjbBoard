@@ -1,6 +1,7 @@
 package com.kjb.kjbBoard.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kjb.kjbBoard.dao.ArticleDao;
 import com.kjb.kjbBoard.dto.Article;
 import com.kjb.kjbBoard.dto.ResultData;
+import com.kjb.kjbBoard.util.Util;
 
 @Service
 public class ArticleService {
@@ -22,9 +24,17 @@ public class ArticleService {
 		return articleDao.getArticles(keyword, keywordType);
 	}
 
-	public ResultData add(String title, String body) {
-		int id = 1; // 임시
-		articleDao.addArticle(title, body);
+	public ResultData add(Map<String,Object> param) {
+		if(param.get("title")==null) {
+			new ResultData("F-1", "title을 입력해주세요");
+		}
+		if(param.get("body")==null) {
+			new ResultData("F-2", "body를 입력해주세요");
+		}
+		System.out.println(param);
+		articleDao.addArticle(param);
+		System.out.println(param);
+		int id = Util.getAsInt(param.get("id"),0);
 		return new ResultData("S-1", "게시글이 작성되었습니다 ", "id", id);
 	}
 

@@ -1,10 +1,12 @@
 package com.kjb.kjbBoard.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kjb.kjbBoard.dto.Article;
@@ -30,8 +32,8 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/doAdd")
 	@ResponseBody
-	public ResultData doAdd(String title, String body) {
-		return articleServise.add(title, body);
+	public ResultData doAdd(@RequestParam Map<String,Object> param) {
+		return articleServise.add(param);
 	}
 
 	@RequestMapping("user/article/doDelete")
