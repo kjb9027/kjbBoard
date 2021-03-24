@@ -21,6 +21,22 @@ public class ArticleService {
 	}
 
 	public List<Article> getArticles(String keywordType, String keyword) {
+		if(keywordType != null) {
+			keywordType = keywordType.trim();
+		}
+		if(keywordType == null || keywordType.length() == 0) {
+			keywordType = "titleAndBody";
+		}
+		if(keyword != null && keyword.length() == 0) {
+			keywordType = null;
+		}
+		if(keyword != null) {
+			keyword = keyword.trim();
+		}
+		if(keyword == null) {
+			keywordType = null;
+		}
+		
 		return articleDao.getArticles(keyword, keywordType);
 	}
 

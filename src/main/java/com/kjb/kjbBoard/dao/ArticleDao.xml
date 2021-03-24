@@ -12,14 +12,16 @@
 		SELECT *
 		FROM article
 		WHERE 1
-		<if test="keywordType=='title'">
-		AND title LIKE CONCAT('%',#{keyword},'%')
-		</if>
-		<if test="keywordType=='body'">
-		AND body LIKE CONCAT('%',#{keyword},'%')
-		</if>
-		<if test="keywordType=='titleAndBody'">
-		AND (title LIKE CONCAT('%',#{keyword},'%') OR body LIKE CONCAT('%',#{keyword},'%'))
+		<if test="keyword != null">
+			<if test="keywordType == 'title'">
+			AND title LIKE CONCAT('%',#{keyword},'%')
+			</if>
+			<if test="keywordType == 'body'">
+			AND body LIKE CONCAT('%',#{keyword},'%')
+			</if>
+			<if test="keywordType == 'titleAndBody'">
+			AND (title LIKE CONCAT('%',#{keyword},'%') OR body LIKE CONCAT('%',#{keyword},'%'))
+			</if>
 		</if>
 		ORDER BY ID DESC
 	</select>
