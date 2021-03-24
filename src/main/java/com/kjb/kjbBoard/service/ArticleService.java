@@ -20,18 +20,21 @@ public class ArticleService {
 
 	public List<Article> getArticles(String keywordType, String keyword) {
 		return articleDao.getArticles(keyword, keywordType);
-
 	}
 
 	public ResultData add(String title, String body) {
-		return articleDao.addArticle(title,body);
+		int id = 1; // 임시
+		articleDao.addArticle(title, body);
+		return new ResultData("S-1", "게시글이 작성되었습니다 ", "id", id);
 	}
 
-	public ResultData delete(Integer id) {
-		return articleDao.deleteArticle(id);
+	public ResultData delete(int id) {
+		articleDao.deleteArticle(id);
+		return new ResultData("S-1", "게시글이 삭제되었습니다 ", "id", id);
 	}
 
-	public ResultData modify(Integer id, String title, String body) {
-		return articleDao.modifyArticle(id,title,body);
+	public ResultData modify(int id, String title, String body) {
+		articleDao.modifyArticle(id, title, body);
+		return new ResultData("S-1", "게시글이 수정되었습니다 ", "id", id);
 	}
 }

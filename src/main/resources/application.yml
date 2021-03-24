@@ -1,2 +1,12 @@
 server: 
   port: 8024
+spring:  datasource:    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.0.11:3306/kjbBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
+
+    username: kjb
+    password: 8325
+  #jpa:
+   #database: mysql   #show-sql: true
+   #database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+mybatis: 
+  type-aliases-package: com.kjb.kjbBoard.dto

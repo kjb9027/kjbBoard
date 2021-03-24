@@ -36,13 +36,13 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(Integer id) {
+	public ResultData doDelete(int id) {
 		return articleServise.delete(id);
 	}
 
 	@RequestMapping("user/article/doModify")
 	@ResponseBody
-	public ResultData doModify(Integer id, String title, String body) {
+	public ResultData doModify(int id, String title, String body) {
 		return articleServise.modify(id, title, body);
 	}
 }
