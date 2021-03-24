@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kjb.kjbBoard.dao.MemberDao;
+import com.kjb.kjbBoard.dto.Member;
 import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.util.Util;
 @Service
@@ -14,8 +15,12 @@ public class MemberService {
 	private MemberDao memberDao;
 
 	public ResultData joinMember(Map<String, Object> param) {
+		Member existMember = memberDao.getMember(param.get("loginId").toString());
 		if(param.get("loginId")==null) {
 			return new ResultData("F-1", "id을 입력해주세요.");
+		}
+		if(existMember != null) {
+			return new ResultData("F-2", String.format("%s (은)는 이미 사용중인 아이디 입니다.", existMember.getId()));
 		}
 		if(param.get("loginPw")==null) {
 			return new ResultData("F-1", "pw를 입력해주세요.");

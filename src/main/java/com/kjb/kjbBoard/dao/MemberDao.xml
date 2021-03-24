@@ -14,4 +14,7 @@
 		phoneNo = #{phoneNo},
 		email = #{email}
 	</insert>
+	<select id="getMember" resultType="Member">
+		SELECT * FROM member WHERE loginId = #{loginId}
+	</select>
 </mapper>
