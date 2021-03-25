@@ -13,4 +13,6 @@ public interface MemberDao {
 	void joinMember(Map<String, Object> param);
 
 	Member getMember(@Param(value = "loginId") String loginId);
+
+	void modifyMember(Map<String, Object> param);
 }

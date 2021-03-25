@@ -17,4 +17,28 @@
 	<select id="getMember" resultType="Member">
 		SELECT * FROM member WHERE loginId = #{loginId}
 	</select>
+	<update id="modifyMember">
+		UPDATE member
+		<set>
+			<if test="loginPw != null || name != null || nickName != null || phoneNo != null || email != null">
+				updateDate = NOW(),
+			</if>
+			<if test="loginPw != null">
+				loginPw = #{loginPw},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="nickName != null">
+				nickName = #{nickName},
+			</if>
+			<if test="phoneNo != null">
+				phoneNo = #{phoneNo},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
 </mapper>

@@ -33,4 +33,9 @@ public class UsrMemberController {
 	public ResultData doLogout(HttpSession session) {
 		return memberService.logoutMember(session);
 	}
+	@RequestMapping("user/member/doModify")
+	@ResponseBody
+	public ResultData doModify(@RequestParam Map<String,Object> param,HttpSession session) {
+		return memberService.modifyMember(param,session);
+	}
 }

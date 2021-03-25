@@ -75,4 +75,17 @@ public class MemberService {
 		return new ResultData("S-2", " 이미 로그아웃되어있습니다.");
 	}
 
+	public ResultData modifyMember(Map<String, Object> param, HttpSession session) {
+		if (session.getAttribute("loginedMemberId") == null) {
+			return new ResultData("F-1", "로그인 후 이용해주세요.");
+		}
+		if(param.isEmpty()) {
+			return new ResultData("F-2", "수정 할 정보를 입력해주세요.");
+		}
+		int loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		param.put("id", loginedMemberId);
+		memberDao.modifyMember(param);
+		return new ResultData("S-1", "회원정보가 수정되었습니다.");
+	}
+
 }
