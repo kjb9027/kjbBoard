@@ -3,10 +3,18 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kjb.kjbBoard.dao.ArticleDao">
+	<select id="getForPrintArticle" resultType="Article">
+		SELECT a.*,
+        IFNULL(m.nickName,"탈퇴회원") AS extra__writer
+		FROM article AS a
+		LEFT JOIN member AS m
+		ON a.memberId = m.id
+		WHERE a.id = #{id}
+	</select>
 	<select id="getArticle" resultType="Article">
 		SELECT *
 		FROM article
-		WHERE ID = #{id}
+		WHERE id = #{id}
 	</select>
 	<select id="getArticles" resultType="Article">
 		SELECT *

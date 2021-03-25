@@ -22,8 +22,8 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/detail")
 	@ResponseBody
-	public Article showDetail(int id) {
-		return articleServise.getArticle(id);
+	public ResultData showDetail(Integer id) {
+		return articleServise.getForPrintArticle(id);
 	}
 
 	@RequestMapping("user/article/list")

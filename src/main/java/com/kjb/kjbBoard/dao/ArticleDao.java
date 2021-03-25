@@ -10,8 +10,9 @@ import com.kjb.kjbBoard.dto.Article;
 
 @Mapper
 public interface ArticleDao {
-	public Article getArticle(
-			@Param(value = "id") int id);
+	public Article getArticle(@Param(value = "id") int id);
+	
+	public Article getForPrintArticle(@Param(value = "id") int id);
 
 	public List<Article> getArticles(
 			@Param(value = "keyword") String keyword,
@@ -23,5 +24,7 @@ public interface ArticleDao {
 			@Param(value = "id") int id);
 
 	public void modifyArticle(Map<String, Object> param);
+
+
 
 }

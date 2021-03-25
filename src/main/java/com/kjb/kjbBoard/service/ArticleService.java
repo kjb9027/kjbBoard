@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kjb.kjbBoard.dao.ArticleDao;
-import com.kjb.kjbBoard.dao.MemberDao;
 import com.kjb.kjbBoard.dto.Article;
 import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.util.Util;
@@ -21,7 +20,19 @@ public class ArticleService {
 	@Autowired
 	private MemberService memberService;
 
-	public Article getArticle(int id) {
+	public ResultData getForPrintArticle(Integer id) {
+		if (id == null) {
+			return new ResultData("F-1", "id를 입력해주세요.");
+		}
+		Article article = articleDao.getForPrintArticle(id);
+		if (article == null) {
+			return new ResultData("F-2", "게시글이 존재하지 않습니다.");
+
+		}
+		return new ResultData("S-1", "성공.", "article", article);
+	}
+
+	private Article getArticle(int id) {
 		return articleDao.getArticle(id);
 	}
 
@@ -75,7 +86,7 @@ public class ArticleService {
 			return new ResultData("F-2", "로그인 후 이용해주세요.");
 		}
 		ResultData actorCanDeleteRd = actorCan(article, loginedMemberId);
-		if(actorCanDeleteRd.isFail()) {
+		if (actorCanDeleteRd.isFail()) {
 			return actorCanDeleteRd;
 		}
 		articleDao.deleteArticle(id);
@@ -83,8 +94,10 @@ public class ArticleService {
 	}
 
 	public ResultData modify(Map<String, Object> param, HttpSession session) {
-		int id=Integer.parseInt(param.get("id").toString());
+		int id = Integer.parseInt(param.get("id").toString());
+		System.out.println(id);
 		Article article = getArticle(id);
+		System.out.println(article);
 		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
 		if (article == null) {
 			return new ResultData("F-4", "게시글이 존재하지 않습니다.");
@@ -96,7 +109,7 @@ public class ArticleService {
 			return new ResultData("F-2", "로그인 후 이용해주세요.");
 		}
 		ResultData actorCanModifyRd = actorCan(article, loginedMemberId);
-		if(actorCanModifyRd.isFail()) {
+		if (actorCanModifyRd.isFail()) {
 			return actorCanModifyRd;
 		}
 
