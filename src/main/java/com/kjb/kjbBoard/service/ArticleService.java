@@ -3,6 +3,8 @@ package com.kjb.kjbBoard.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,16 +42,19 @@ public class ArticleService {
 		return articleDao.getArticles(keyword, keywordType);
 	}
 
-	public ResultData add(Map<String,Object> param) {
+	public ResultData add(Map<String,Object> param, HttpSession session) {
+		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
+		if(loginedMemberId == 0) {
+			return new ResultData("F-2", "로그인 후 이용해주세요.");
+		}
 		if(param.get("title")==null) {
 			return new ResultData("F-1", "title을 입력해주세요.");
 		}
 		if(param.get("body")==null) {
 			return new ResultData("F-1", "body를 입력해주세요.");
 		}
-		System.out.println(param);
+		param.put("memberId", loginedMemberId);
 		articleDao.addArticle(param);
-		System.out.println(param);
 		int id = Util.getAsInt(param.get("id"),0);
 		return new ResultData("S-1", "게시글이 작성되었습니다.", "id", id);
 	}

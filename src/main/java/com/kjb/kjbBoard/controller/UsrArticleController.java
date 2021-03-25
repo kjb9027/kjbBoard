@@ -3,6 +3,8 @@ package com.kjb.kjbBoard.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +34,8 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/doAdd")
 	@ResponseBody
-	public ResultData doAdd(@RequestParam Map<String,Object> param) {
-		return articleServise.add(param);
+	public ResultData doAdd(@RequestParam Map<String,Object> param, HttpSession session) {
+		return articleServise.add(param,session);
 	}
 
 	@RequestMapping("user/article/doDelete")
