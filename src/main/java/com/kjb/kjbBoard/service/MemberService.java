@@ -67,4 +67,12 @@ public class MemberService {
 		return new ResultData("S-1", String.format("%s님 환영합니다", existMember.getNickName()));
 	}
 
+	public ResultData logoutMember(HttpSession session) {
+		if (session.getAttribute("loginedMemberId") != null) {
+			session.removeAttribute("loginedMemberId");
+			return new ResultData("S-1", "로그아웃되었습니다.");
+		}
+		return new ResultData("S-2", " 이미 로그아웃되어있습니다.");
+	}
+
 }

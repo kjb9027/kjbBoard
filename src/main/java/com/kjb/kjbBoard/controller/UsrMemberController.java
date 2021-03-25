@@ -28,4 +28,9 @@ public class UsrMemberController {
 	public ResultData doLogin(@RequestParam Map<String,Object> param, HttpSession session) {
 		return memberService.loginMember(param,session);
 	}
+	@RequestMapping("user/member/doLogout")
+	@ResponseBody
+	public ResultData doLogout(HttpSession session) {
+		return memberService.logoutMember(session);
+	}
 }
