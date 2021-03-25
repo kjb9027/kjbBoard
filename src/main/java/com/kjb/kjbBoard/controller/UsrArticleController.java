@@ -40,13 +40,13 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(int id) {
-		return articleServise.delete(id);
+	public ResultData doDelete(int id,HttpSession session) {
+		return articleServise.delete(id,session);
 	}
 
 	@RequestMapping("user/article/doModify")
 	@ResponseBody
-	public ResultData doModify(int id, String title, String body) {
-		return articleServise.modify(id, title, body);
+	public ResultData doModify(@RequestParam Map<String,Object> param, HttpSession session) {
+		return articleServise.modify(param,session);
 	}
 }
