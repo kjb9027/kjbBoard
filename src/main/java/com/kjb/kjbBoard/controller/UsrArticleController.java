@@ -28,8 +28,8 @@ public class UsrArticleController {
 
 	@RequestMapping("user/article/list")
 	@ResponseBody
-	public List<Article> showList(String keywordType, String keyword) {
-		return articleServise.getArticles(keywordType, keyword);
+	public ResultData showList(String keywordType, String keyword) {
+		return articleServise.getForPrintArticles(keywordType, keyword);
 	}
 
 	@RequestMapping("user/article/doAdd")

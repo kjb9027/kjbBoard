@@ -16,22 +16,25 @@
 		FROM article
 		WHERE id = #{id}
 	</select>
-	<select id="getArticles" resultType="Article">
-		SELECT *
-		FROM article
+	<select id="getForPrintArticles" resultType="Article">
+		SELECT a.*,
+        IFNULL(m.nickName,"탈퇴회원") AS extra__writer
+		FROM article AS a
+		LEFT JOIN member AS m
+		ON a.memberId = m.id
 		WHERE 1
 		<if test="keyword != null">
 			<if test="keywordType == 'title'">
-			AND title LIKE CONCAT('%',#{keyword},'%')
+			AND a.title LIKE CONCAT('%',#{keyword},'%')
 			</if>
 			<if test="keywordType == 'body'">
-			AND body LIKE CONCAT('%',#{keyword},'%')
+			AND a.body LIKE CONCAT('%',#{keyword},'%')
 			</if>
 			<if test="keywordType == 'titleAndBody'">
-			AND (title LIKE CONCAT('%',#{keyword},'%') OR body LIKE CONCAT('%',#{keyword},'%'))
+			AND (a.title LIKE CONCAT('%',#{keyword},'%') OR a.body LIKE CONCAT('%',#{keyword},'%'))
 			</if>
 		</if>
-		ORDER BY ID DESC
+		ORDER BY a.ID DESC
 	</select>
 	<insert id="addArticle" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO article

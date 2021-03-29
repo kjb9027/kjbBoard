@@ -36,7 +36,7 @@ public class ArticleService {
 		return articleDao.getArticle(id);
 	}
 
-	public List<Article> getArticles(String keywordType, String keyword) {
+	public ResultData getForPrintArticles(String keywordType, String keyword) {
 		if (keywordType != null) {
 			keywordType = keywordType.trim();
 		}
@@ -53,8 +53,10 @@ public class ArticleService {
 			keywordType = null;
 		}
 
-		return articleDao.getArticles(keyword, keywordType);
+		List<Article> articles= articleDao.getForPrintArticles(keyword, keywordType);
+		return new ResultData("S-1", "리스트 출력 성공", "articles", articles);
 	}
+
 
 	public ResultData add(Map<String, Object> param, HttpSession session) {
 		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
@@ -126,4 +128,5 @@ public class ArticleService {
 		}
 		return new ResultData("F-1", "권한이 없습니다.");
 	}
+
 }
