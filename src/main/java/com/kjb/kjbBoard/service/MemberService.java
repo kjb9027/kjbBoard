@@ -21,7 +21,7 @@ public class MemberService {
 		if (param.get("loginId") == null) {
 			return new ResultData("F-1", "id을 입력해주세요.");
 		}
-		Member existMember = memberDao.getMember(param.get("loginId").toString());
+		Member existMember = memberDao.getMember((int)param.get("loginId"));
 		if (existMember != null) {
 			return new ResultData("F-2", String.format("%s (은)는 이미 사용중인 아이디 입니다.", existMember.getId()));
 		}
@@ -56,7 +56,7 @@ public class MemberService {
 		if (param.get("loginPw") == null) {
 			return new ResultData("F-1", "pw를 입력해주세요.");
 		}
-		Member existMember = memberDao.getMember(param.get("loginId").toString());
+		Member existMember = memberDao.getMember((int)param.get("loginId"));
 		if (existMember == null) {
 			return new ResultData("F-2", "존재하지 않는 로그인아이디 입니다.", "loginId", param.get("loginId"));
 		}
@@ -87,9 +87,15 @@ public class MemberService {
 		memberDao.modifyMember(param);
 		return new ResultData("S-1", "회원정보가 수정되었습니다.");
 	}
+	
+	public Member getMember(int loginedMemberId) {
+		return memberDao.getMember(loginedMemberId);
+	}
 
-	public boolean idAdmin(int actorId) {
+
+	public boolean isAdmin(int actorId) {
 		return actorId == 1;
 	}
+
 
 }
