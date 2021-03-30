@@ -75,3 +75,7 @@ ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER updateDa
 UPDATE article
 SET memberId = 1
 WHERE memberId = 0;
+
+-- insert into article(regDate,updateDate,memberId,title,body)
+-- select now(),now(),floor(rand()*2)+1,concat('제목_',floor(rand()*1000)+1),concat('내용_',floor(rand()*1000)+1)
+-- from article;

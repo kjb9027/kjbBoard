@@ -1,6 +1,5 @@
 package com.kjb.kjbBoard.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kjb.kjbBoard.dto.Article;
 import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.service.ArticleService;
 
@@ -28,25 +26,27 @@ public class UsrArticleController {
 
 	@RequestMapping("usr/article/list")
 	@ResponseBody
-	public ResultData showList(String keywordType, String keyword) {
-		return articleServise.getForPrintArticles(keywordType, keyword);
+	public ResultData showList(String keywordType, String keyword, 
+			@RequestParam(defaultValue = "1") int page) {
+		int itemsInAPage = 20;
+		return articleServise.getForPrintArticles(keywordType, keyword,page,itemsInAPage);
 	}
 
 	@RequestMapping("usr/article/doAdd")
 	@ResponseBody
-	public ResultData doAdd(@RequestParam Map<String,Object> param, HttpSession session) {
-		return articleServise.add(param,session);
+	public ResultData doAdd(@RequestParam Map<String, Object> param, HttpSession session) {
+		return articleServise.add(param, session);
 	}
 
 	@RequestMapping("usr/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(int id,HttpSession session) {
-		return articleServise.delete(id,session);
+	public ResultData doDelete(int id, HttpSession session) {
+		return articleServise.delete(id, session);
 	}
 
 	@RequestMapping("usr/article/doModify")
 	@ResponseBody
-	public ResultData doModify(@RequestParam Map<String,Object> param, HttpSession session) {
-		return articleServise.modify(param,session);
+	public ResultData doModify(@RequestParam Map<String, Object> param, HttpSession session) {
+		return articleServise.modify(param, session);
 	}
 }

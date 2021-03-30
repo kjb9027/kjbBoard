@@ -20,6 +20,10 @@ public class ArticleService {
 	@Autowired
 	private MemberService memberService;
 
+	private Article getArticle(int id) {
+		return articleDao.getArticle(id);
+	}
+
 	public ResultData getForPrintArticle(Integer id) {
 		if (id == null) {
 			return new ResultData("F-1", "id를 입력해주세요.");
@@ -32,11 +36,7 @@ public class ArticleService {
 		return new ResultData("S-1", "성공.", "article", article);
 	}
 
-	private Article getArticle(int id) {
-		return articleDao.getArticle(id);
-	}
-
-	public ResultData getForPrintArticles(String keywordType, String keyword) {
+	public ResultData getForPrintArticles(String keywordType, String keyword, int page, int itemsInAPage) {
 		if (keywordType != null) {
 			keywordType = keywordType.trim();
 		}
@@ -52,11 +52,14 @@ public class ArticleService {
 		if (keyword == null) {
 			keywordType = null;
 		}
-
-		List<Article> articles= articleDao.getForPrintArticles(keyword, keywordType);
+		//page : 몇 페이지를 노출 시킬것인지
+		//itemsInAPage : 몇 개씩 노출 시킬것인지
+		
+		int limitStart = (page - 1) * itemsInAPage;
+		int limitTake = itemsInAPage;
+		List<Article> articles = articleDao.getForPrintArticles(keyword, keywordType, limitStart, limitTake);
 		return new ResultData("S-1", "리스트 출력 성공", "articles", articles);
 	}
-
 
 	public ResultData add(Map<String, Object> param, HttpSession session) {
 		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
@@ -96,10 +99,8 @@ public class ArticleService {
 	}
 
 	public ResultData modify(Map<String, Object> param, HttpSession session) {
-		int id = Integer.parseInt(param.get("id").toString());
-		System.out.println(id);
+		int id = Util.getAsInt(param.get("id"), 0);
 		Article article = getArticle(id);
-		System.out.println(article);
 		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
 		if (article == null) {
 			return new ResultData("F-4", "게시글이 존재하지 않습니다.");
@@ -109,6 +110,9 @@ public class ArticleService {
 		}
 		if (loginedMemberId == 0) {
 			return new ResultData("F-2", "로그인 후 이용해주세요.");
+		}
+		if (param.get("title") == null && param.get("body") == null) {
+			return new ResultData("F-3", "수정 할 내용이 없습니다");
 		}
 		ResultData actorCanModifyRd = actorCan(article, loginedMemberId);
 		if (actorCanModifyRd.isFail()) {
