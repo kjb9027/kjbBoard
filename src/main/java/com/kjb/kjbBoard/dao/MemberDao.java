@@ -12,8 +12,11 @@ import com.kjb.kjbBoard.dto.Member;
 public interface MemberDao {
 	void joinMember(Map<String, Object> param);
 
-	Member getMember(@Param(value = "loginId") int loginId);
+	Member getMemberByLoginId(@Param(value = "loginId") String loginId);
+
+	Member getMember(@Param(value = "id") int id);
 
 	void modifyMember(Map<String, Object> param);
+
 
 }

@@ -21,7 +21,7 @@ public class MemberService {
 		if (param.get("loginId") == null) {
 			return new ResultData("F-1", "id을 입력해주세요.");
 		}
-		Member existMember = memberDao.getMember((int)param.get("loginId"));
+		Member existMember = memberDao.getMemberByLoginId(param.get("loginId").toString());
 		if (existMember != null) {
 			return new ResultData("F-2", String.format("%s (은)는 이미 사용중인 아이디 입니다.", existMember.getId()));
 		}
@@ -47,16 +47,13 @@ public class MemberService {
 	}
 
 	public ResultData loginMember(Map<String, Object> param, HttpSession session) {
-		if (session.getAttribute("loginedMemberId") != null) {
-			return new ResultData("F-4", "이미 로그인되어있습니다.");
-		}
 		if (param.get("loginId") == null) {
 			return new ResultData("F-1", "id을 입력해주세요.");
 		}
 		if (param.get("loginPw") == null) {
 			return new ResultData("F-1", "pw를 입력해주세요.");
 		}
-		Member existMember = memberDao.getMember((int)param.get("loginId"));
+		Member existMember = memberDao.getMemberByLoginId(param.get("loginId").toString());
 		if (existMember == null) {
 			return new ResultData("F-2", "존재하지 않는 로그인아이디 입니다.", "loginId", param.get("loginId"));
 		}
@@ -68,18 +65,12 @@ public class MemberService {
 	}
 
 	public ResultData logoutMember(HttpSession session) {
-		if (session.getAttribute("loginedMemberId") != null) {
-			session.removeAttribute("loginedMemberId");
-			return new ResultData("S-1", "로그아웃되었습니다.");
-		}
-		return new ResultData("S-2", " 이미 로그아웃되어있습니다.");
+		session.removeAttribute("loginedMemberId");
+		return new ResultData("S-1", "로그아웃되었습니다.");
 	}
 
 	public ResultData modifyMember(Map<String, Object> param, HttpSession session) {
-		if (session.getAttribute("loginedMemberId") == null) {
-			return new ResultData("F-1", "로그인 후 이용해주세요.");
-		}
-		if(param.isEmpty()) {
+		if (param.isEmpty()) {
 			return new ResultData("F-2", "수정 할 정보를 입력해주세요.");
 		}
 		int loginedMemberId = (int) session.getAttribute("loginedMemberId");
@@ -87,15 +78,13 @@ public class MemberService {
 		memberDao.modifyMember(param);
 		return new ResultData("S-1", "회원정보가 수정되었습니다.");
 	}
-	
+
 	public Member getMember(int loginedMemberId) {
 		return memberDao.getMember(loginedMemberId);
 	}
 
-
 	public boolean isAdmin(int actorId) {
 		return actorId == 1;
 	}
-
 
 }

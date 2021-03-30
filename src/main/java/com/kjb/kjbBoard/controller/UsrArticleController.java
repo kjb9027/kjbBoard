@@ -20,31 +20,31 @@ public class UsrArticleController {
 	@Autowired
 	private ArticleService articleServise;
 
-	@RequestMapping("user/article/detail")
+	@RequestMapping("usr/article/detail")
 	@ResponseBody
 	public ResultData showDetail(Integer id) {
 		return articleServise.getForPrintArticle(id);
 	}
 
-	@RequestMapping("user/article/list")
+	@RequestMapping("usr/article/list")
 	@ResponseBody
 	public ResultData showList(String keywordType, String keyword) {
 		return articleServise.getForPrintArticles(keywordType, keyword);
 	}
 
-	@RequestMapping("user/article/doAdd")
+	@RequestMapping("usr/article/doAdd")
 	@ResponseBody
 	public ResultData doAdd(@RequestParam Map<String,Object> param, HttpSession session) {
 		return articleServise.add(param,session);
 	}
 
-	@RequestMapping("user/article/doDelete")
+	@RequestMapping("usr/article/doDelete")
 	@ResponseBody
 	public ResultData doDelete(int id,HttpSession session) {
 		return articleServise.delete(id,session);
 	}
 
-	@RequestMapping("user/article/doModify")
+	@RequestMapping("usr/article/doModify")
 	@ResponseBody
 	public ResultData doModify(@RequestParam Map<String,Object> param, HttpSession session) {
 		return articleServise.modify(param,session);

@@ -15,12 +15,55 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Qualifier("beforeActionInterceptor")
 	HandlerInterceptor beforeActionInterceptor;
 
+	// needLoginInterceptor 인터셉터 불러오기
+	@Autowired
+	@Qualifier("needLoginInterceptor")
+	HandlerInterceptor needLoginInterceptor;
+
+	// needLogoutInterceptor 인터셉터 불러오기
+	@Autowired
+	@Qualifier("needLogoutInterceptor")
+	HandlerInterceptor needLogoutInterceptor;
+	
+
 	// 이 함수는 인터셉터를 적용하는 역할을 합니다.
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		// beforeActionInterceptor 인터셉터가 모든 액션 실행전에 실행되도록 처리
-		registry.addInterceptor(beforeActionInterceptor).addPathPatterns("/**").excludePathPatterns("/resource/**")
+		registry.addInterceptor(beforeActionInterceptor)
+				.addPathPatterns("/**").excludePathPatterns("/resource/**")
 				.excludePathPatterns("/gen/**");
 
+		// 로그인 필요
+		registry.addInterceptor(needLoginInterceptor)
+				.addPathPatterns("/**")
+				//이 url은 인터셉터가 확인하지 않아도 됨
+				.excludePathPatterns("/")
+				.excludePathPatterns("/resource/**")
+				.excludePathPatterns("/usr/home/**")
+				.excludePathPatterns("/usr/member/login")
+				.excludePathPatterns("/usr/member/doLogin")
+				.excludePathPatterns("/usr/member/join")
+				.excludePathPatterns("/usr/member/doJoin")
+				.excludePathPatterns("/usr/article/list")
+				.excludePathPatterns("/usr/article/detail")
+				.excludePathPatterns("/usr/member/findLoginId")
+				.excludePathPatterns("/usr/member/doFindLoginId")
+				.excludePathPatterns("/usr/member/findLoginPw")
+				.excludePathPatterns("/usr/member/doFindLoginPw")
+				.excludePathPatterns("/common/**")
+				.excludePathPatterns("/usr/file/test*")
+				.excludePathPatterns("/usr/file/doTest*")
+				.excludePathPatterns("/test/**")
+				.excludePathPatterns("/error");
+
+		// 로그인 상태에서 접속할 수 없는 URI 전부 기술
+		registry.addInterceptor(needLogoutInterceptor)
+				.addPathPatterns("/adm/member/login")
+				.addPathPatterns("/adm/member/doLogin")
+				.addPathPatterns("/usr/member/login")
+				.addPathPatterns("/usr/member/doLogin")
+				.addPathPatterns("/usr/member/join")
+				.addPathPatterns("/usr/member/doJoin");
 	}
 }

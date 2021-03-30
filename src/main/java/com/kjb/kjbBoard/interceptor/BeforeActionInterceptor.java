@@ -11,10 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.kjb.kjbBoard.dto.Member;
 import com.kjb.kjbBoard.service.MemberService;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Component("beforeActionInterceptor") // 컴포넌트 이름 설정
-@Slf4j
 public class BeforeActionInterceptor implements HandlerInterceptor {
 	@Autowired
 	private MemberService memberService;
@@ -31,7 +28,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		int loginedMemberId = 0;
 		Member loginedMember = null;
 
-		if (session.getAttribute("loginedMemberId") != null) { // 만약 세션에 아이디가 저장되있다면
+		if (session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			isLogined = true;
 			loginedMember = memberService.getMember(loginedMemberId);

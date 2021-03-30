@@ -18,22 +18,22 @@ public class UsrMemberController {
 	@Autowired
 	private MemberService memberService;
 
-	@RequestMapping("user/member/doJoin")
+	@RequestMapping("usr/member/doJoin")
 	@ResponseBody
 	public ResultData doJoin(@RequestParam Map<String,Object> param) {
 		return memberService.joinMember(param);
 	}
-	@RequestMapping("user/member/doLogin")
+	@RequestMapping("usr/member/doLogin")
 	@ResponseBody
 	public ResultData doLogin(@RequestParam Map<String,Object> param, HttpSession session) {
 		return memberService.loginMember(param,session);
 	}
-	@RequestMapping("user/member/doLogout")
+	@RequestMapping("usr/member/doLogout")
 	@ResponseBody
 	public ResultData doLogout(HttpSession session) {
 		return memberService.logoutMember(session);
 	}
-	@RequestMapping("user/member/doModify")
+	@RequestMapping("usr/member/doModify")
 	@ResponseBody
 	public ResultData doModify(@RequestParam Map<String,Object> param,HttpSession session) {
 		return memberService.modifyMember(param,session);
