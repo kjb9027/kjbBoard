@@ -27,9 +27,9 @@ public class UsrArticleController {
 	@RequestMapping("usr/article/list")
 	@ResponseBody
 	public ResultData showList(String keywordType, String keyword, 
-			@RequestParam(defaultValue = "1") int page) {
+			@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "1") int boardId) {
 		int itemsInAPage = 20;
-		return articleServise.getForPrintArticles(keywordType, keyword,page,itemsInAPage);
+		return articleServise.getForPrintArticles(keywordType, keyword, page, itemsInAPage, boardId);
 	}
 
 	@RequestMapping("usr/article/doAdd")

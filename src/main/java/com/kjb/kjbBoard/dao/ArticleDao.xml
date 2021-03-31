@@ -8,6 +8,11 @@
 		FROM article
 		WHERE id = #{id}
 	</select>
+	<select id="getBoard" resultType="Board">
+		SELECT *
+		FROM board
+		WHERE id = #{boardId}
+	</select>
 	<select id="getForPrintArticle" resultType="Article">
 		SELECT a.*,
         IFNULL(m.nickName,"탈퇴회원") AS extra__writer
@@ -33,6 +38,9 @@
 			<if test="keywordType == 'titleAndBody'">
 			AND (a.title LIKE CONCAT('%',#{keyword},'%') OR a.body LIKE CONCAT('%',#{keyword},'%'))
 			</if>
+		</if>
+		<if test="boardId != null">
+			AND a.boardId = #{boardId}
 		</if>
 		ORDER BY a.ID DESC
 		<if test="limitStart != null and limitTake != null">

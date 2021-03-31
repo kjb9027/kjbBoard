@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.kjb.kjbBoard.dao.ArticleDao;
 import com.kjb.kjbBoard.dto.Article;
+import com.kjb.kjbBoard.dto.Board;
 import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.util.Util;
 
@@ -36,7 +37,7 @@ public class ArticleService {
 		return new ResultData("S-1", "성공.", "article", article);
 	}
 
-	public ResultData getForPrintArticles(String keywordType, String keyword, int page, int itemsInAPage) {
+	public ResultData getForPrintArticles(String keywordType, String keyword, int page, int itemsInAPage, int boardId) {
 		if (keywordType != null) {
 			keywordType = keywordType.trim();
 		}
@@ -52,12 +53,16 @@ public class ArticleService {
 		if (keyword == null) {
 			keywordType = null;
 		}
+		Board board = articleDao.getBoard(boardId);
+		if(board == null) {
+			return new ResultData("F-1", "존재하지 않는 게시판입니다.");
+		}
 		//page : 몇 페이지를 노출 시킬것인지
 		//itemsInAPage : 몇 개씩 노출 시킬것인지
 		
 		int limitStart = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
-		List<Article> articles = articleDao.getForPrintArticles(keyword, keywordType, limitStart, limitTake);
+		List<Article> articles = articleDao.getForPrintArticles(keyword, keywordType, limitStart, limitTake, boardId);
 		return new ResultData("S-1", "리스트 출력 성공", "articles", articles);
 	}
 

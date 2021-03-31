@@ -79,3 +79,33 @@ WHERE memberId = 0;
 -- insert into article(regDate,updateDate,memberId,title,body)
 -- select now(),now(),floor(rand()*2)+1,concat('제목_',floor(rand()*1000)+1),concat('내용_',floor(rand()*1000)+1)
 -- from article;
+
+# 게시판 테이블 생성
+CREATE TABLE board(
+id INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+code VARCHAR(20) NOT NULL UNIQUE,
+NAME VARCHAR(20) NOT NULL UNIQUE
+);
+
+# 게시판 데이터 생성
+INSERT INTO board
+SET regDate = now(),
+updateDate = now(),
+code = 'notice',
+NAME = '공지사항';
+
+INSERT INTO board
+SET regDate = now(),
+updateDate = now(),
+code = 'free',
+NAME = '자유';
+
+# 게시물 테이블에 boardId 컬럼 추가
+ALTER TABLE article ADD COLUMN boardId INT(10) UNSIGNED NOT NULL AFTER updateDate;
+
+# 기존 게시물 데이터 0에서 1이나 2 로 지정
+UPDATE article
+SET boardId = floor(rand()*2) + 1 
+WHERE boardId = 0;

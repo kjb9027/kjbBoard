@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.kjb.kjbBoard.dto.Article;
+import com.kjb.kjbBoard.dto.Board;
 
 @Mapper
 public interface ArticleDao {
@@ -18,7 +19,8 @@ public interface ArticleDao {
 			@Param(value = "keyword") String keyword,
 			@Param(value = "keywordType") String keywordType, 
 			@Param(value = "limitStart") int limitStart, 
-			@Param(value = "limitTake") int limitTake);
+			@Param(value = "limitTake") int limitTake,
+			@Param(value = "boardId") int boardId);
 
 	public void addArticle(Map<String,Object> param);
 
@@ -26,6 +28,8 @@ public interface ArticleDao {
 			@Param(value = "id") int id);
 
 	public void modifyArticle(Map<String, Object> param);
+
+	public Board getBoard(@Param(value = "boardId") int boardId);
 
 
 
