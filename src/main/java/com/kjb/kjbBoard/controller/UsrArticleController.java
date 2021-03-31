@@ -37,7 +37,7 @@ public class UsrArticleController {
 	public ResultData doAdd(@RequestParam Map<String, Object> param, HttpSession session) {
 		return articleServise.add(param, session);
 	}
-
+	
 	@RequestMapping("usr/article/doDelete")
 	@ResponseBody
 	public ResultData doDelete(int id, HttpSession session) {
@@ -48,5 +48,11 @@ public class UsrArticleController {
 	@ResponseBody
 	public ResultData doModify(@RequestParam Map<String, Object> param, HttpSession session) {
 		return articleServise.modify(param, session);
+	}
+	
+	@RequestMapping("usr/article/doAddReply")
+	@ResponseBody
+	public ResultData doAddReply(@RequestParam Map<String, Object> param, HttpSession session) {
+		return articleServise.addReply(param, session);
 	}
 }

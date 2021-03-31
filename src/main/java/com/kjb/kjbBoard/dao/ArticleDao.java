@@ -31,6 +31,8 @@ public interface ArticleDao {
 
 	public Board getBoard(@Param(value = "boardId") int boardId);
 
+	public void addReply(Map<String, Object> param);
+
 
 
 

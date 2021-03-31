@@ -68,9 +68,6 @@ public class ArticleService {
 
 	public ResultData add(Map<String, Object> param, HttpSession session) {
 		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
-		if (loginedMemberId == 0) {
-			return new ResultData("F-2", "로그인 후 이용해주세요.");
-		}
 		if (param.get("title") == null) {
 			return new ResultData("F-1", "title을 입력해주세요.");
 		}
@@ -91,9 +88,6 @@ public class ArticleService {
 		}
 		if (id == 0) {
 			return new ResultData("F-1", "id를 입력해주세요.");
-		}
-		if (loginedMemberId == 0) {
-			return new ResultData("F-2", "로그인 후 이용해주세요.");
 		}
 		ResultData actorCanDeleteRd = actorCan(article, loginedMemberId);
 		if (actorCanDeleteRd.isFail()) {
@@ -136,6 +130,20 @@ public class ArticleService {
 			return new ResultData("S-2", "가능합니다.");
 		}
 		return new ResultData("F-1", "권한이 없습니다.");
+	}
+
+	public ResultData addReply(Map<String, Object> param, HttpSession session) {
+		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
+		param.put("memberId", loginedMemberId);
+		if (param.get("articleId") == null) {
+			return new ResultData("F-1", "articleId를 입력해주세요.");
+		}
+		if (param.get("body") == null) {
+			return new ResultData("F-1", "body를 입력해주세요.");
+		}
+		articleDao.addReply(param);
+		int id = Util.getAsInt(param.get("id"), 0);
+		return new ResultData("S-1", "게시글이 작성되었습니다.", "id", id);
 	}
 
 }

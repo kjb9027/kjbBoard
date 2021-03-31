@@ -74,4 +74,12 @@
 		</set>
 		WHERE id = #{id}
 	</update>
+	<insert id="addReply" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO reply
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		articleId = #{articleId},
+		memberId = #{memberId},
+		body = #{body}
+	</insert>
 </mapper>

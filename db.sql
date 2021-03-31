@@ -77,6 +77,9 @@ SET memberId = 1
 WHERE memberId = 0;
 
 -- insert into article(regDate,updateDate,memberId,title,body)
+-- values (now(),now(),floor(rand()*2)+1,concat('제목_',floor(rand()*1000)+1),concat('내용_',floor(rand()*1000)+1));
+--
+-- insert into article(regDate,updateDate,memberId,title,body)
 -- select now(),now(),floor(rand()*2)+1,concat('제목_',floor(rand()*1000)+1),concat('내용_',floor(rand()*1000)+1)
 -- from article;
 
@@ -109,3 +112,20 @@ ALTER TABLE article ADD COLUMN boardId INT(10) UNSIGNED NOT NULL AFTER updateDat
 UPDATE article
 SET boardId = floor(rand()*2) + 1 
 WHERE boardId = 0;
+
+# 댓글 테이블 생성
+CREATE TABLE reply(
+id INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+articleId INT(10) UNSIGNED NOT NULL,
+memberId INT(10) UNSIGNED NOT NULL,
+body TEXT NOT NULL
+);
+
+-- insert into reply(regDate, updateDate, articleId, memberId, body)
+-- values(now(), now(), floor(rand()*226)+1,floor(rand()*3)+1, concat('내용_',floor(rand()*1000)+1));
+--
+-- insert into reply(regDate, updateDate, articleId, memberId, body)
+-- select now(), now(), floor(rand()*226)+1,floor(rand()*3)+1, concat('내용_',floor(rand()*1000)+1)
+-- from reply;
