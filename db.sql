@@ -123,9 +123,27 @@ memberId INT(10) UNSIGNED NOT NULL,
 body TEXT NOT NULL
 );
 
--- insert into reply(regDate, updateDate, articleId, memberId, body)
--- values(now(), now(), floor(rand()*226)+1,floor(rand()*3)+1, concat('내용_',floor(rand()*1000)+1));
---
--- insert into reply(regDate, updateDate, articleId, memberId, body)
--- select now(), now(), floor(rand()*226)+1,floor(rand()*3)+1, concat('내용_',floor(rand()*1000)+1)
+# article 칼럼명을 id로 수정
+ALTER TABLE reply CHANGE COLUMN articleId relId INT UNSIGNED NOT NULL;
+
+# 게시물 전용 댓글에서 범용 댓글로 바꾸기 위해 relTypeCode추가
+ALTER TABLE reply ADD COLUMN relTypeCode VARCHAR(20) NOT NULL AFTER updateDate;
+
+# 고속 검색을 위해 index추가
+ALTER TABLE reply ADD KEY (relTypeCode, relId);
+# 예시
+-- SELECT * FROM reply WHERE relTypeCode = 'article' AND relId = 5; O
+-- SELECT * FROM reply WHERE relTypeCode = 'article'; O
+-- SELECT * FROM reply WHERE relId = 5 AND relTypeCode = 'article'; X (인덱스 설정시 순서를 맞게 해야한다.)
+
+# 현재는 게시물 댓글밖에 없기때문에 모든 relTypeCode 값을 article로 지정
+UPDATE reply
+SET relTypeCode = 'article'
+WHERE relTypeCode='';
+
+-- insert into reply(regDate, updateDate, relTypeCode, relId, memberId, body)
+-- values(now(), now() ,'article' , floor(rand()*226)+1,floor(rand()*3)+1, concat('내용_',floor(rand()*1000)+1));
+
+-- insert into reply(regDate, updateDate, relTypeCode, relId, memberId, body)
+-- select now(), now(), 'article', floor(rand()*226)+1,floor(rand()*3)+1, concat('내용_',floor(rand()*1000)+1)
 -- from reply;

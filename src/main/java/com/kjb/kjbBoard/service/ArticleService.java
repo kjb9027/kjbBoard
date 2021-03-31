@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.kjb.kjbBoard.dao.ArticleDao;
 import com.kjb.kjbBoard.dto.Article;
 import com.kjb.kjbBoard.dto.Board;
+import com.kjb.kjbBoard.dto.Reply;
 import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.util.Util;
 
@@ -131,19 +132,4 @@ public class ArticleService {
 		}
 		return new ResultData("F-1", "권한이 없습니다.");
 	}
-
-	public ResultData addReply(Map<String, Object> param, HttpSession session) {
-		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
-		param.put("memberId", loginedMemberId);
-		if (param.get("articleId") == null) {
-			return new ResultData("F-1", "articleId를 입력해주세요.");
-		}
-		if (param.get("body") == null) {
-			return new ResultData("F-1", "body를 입력해주세요.");
-		}
-		articleDao.addReply(param);
-		int id = Util.getAsInt(param.get("id"), 0);
-		return new ResultData("S-1", "게시글이 작성되었습니다.", "id", id);
-	}
-
 }

@@ -42,7 +42,7 @@
 		<if test="boardId != null">
 			AND a.boardId = #{boardId}
 		</if>
-		ORDER BY a.ID DESC
+		ORDER BY a.id DESC
 		<if test="limitStart != null and limitTake != null">
 		LIMIT #{limitStart}, #{limitTake}
 		</if>

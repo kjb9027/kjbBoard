@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kjb.kjbBoard.dao.ReplyDao">
+	<insert id="addReply" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO reply
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		relTypeCode = #{relTypeCode},
+		relId = #{relId},
+		memberId = #{memberId},
+		body = #{body}
+	</insert>
+	<select id="getForPrintReplies" resultType="Reply">
+		SELECT r.*,
+        IFNULL(m.nickName,"탈퇴회원") AS extra__writer
+		FROM reply AS r
+		LEFT JOIN member AS m
+		ON r.memberId = m.id
+		WHERE 1
+		AND r.relTypeCode = #{relTypeCode}
+		AND r.relId = #{relId}
+		ORDER BY r.id DESC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	<select id="getForPrintArticle" resultType="Article">
+		SELECT a.*,
+        IFNULL(m.nickName,"탈퇴회원") AS extra__writer
+		FROM article AS a
+		LEFT JOIN member AS m
+		ON a.memberId = m.id
+		WHERE a.id = #{id}
+	</select>
+	
+	<insert id="addArticle" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO article
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		memberId = #{memberId},
+		title = #{title},
+		body = #{body}
+	</insert>
+	<delete id="deleteArticle">
+		DELETE FROM article
+		WHERE id = #{id}
+	</delete>
+	<update id="modifyArticle">
+		UPDATE article
+		<set>
+			<if test="title != null or body != null">
+				updateDate = NOW(),
+			</if>
+			<if test="title != null">
+				title = #{title},
+			</if>
+			<if test="body != null">
+				body = #{body},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+</mapper>
