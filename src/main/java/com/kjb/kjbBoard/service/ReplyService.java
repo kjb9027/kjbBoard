@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +23,12 @@ public class ReplyService {
 	private ArticleDao articleDao;
 	@Autowired
 	private MemberService memberService;
-	
+
 	public ResultData getForPrintReplies(String relTypeCode, Integer relId) {
 		if (relId == null) {
 			return new ResultData("F-1", "게시글 번호를 확인해주세요.");
 		}
-		if(relTypeCode.equals("article")) {
+		if (relTypeCode.equals("article")) {
 			Article article = articleDao.getArticle(relId);
 			if (article == null) {
 				return new ResultData("F-2", "존재하지 않는 게시물 입니다.");
@@ -39,9 +38,10 @@ public class ReplyService {
 		int itemsInAPage = 10;
 		List<Reply> replies = replyDao.getForPrintReplies(relTypeCode, relId);
 		System.out.println(replies);
-		return new ResultData("S-1", "댓글리스트" ,"replies" ,replies);
+		return new ResultData("S-1", "댓글리스트", "replies", replies);
 	}
-	public ResultData addReply(Map<String, Object> param, HttpServletRequest req) {
+
+	public ResultData add(Map<String, Object> param, HttpServletRequest req) {
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		param.put("memberId", loginedMemberId);
 		if (param.get("articleId") == null) {
@@ -54,35 +54,57 @@ public class ReplyService {
 		int id = Util.getAsInt(param.get("id"), 0);
 		return new ResultData("S-1", "게시글이 작성되었습니다.", "id", id);
 	}
-	
-	
-	
-	
-	
-	
-	public ResultData deleteReply(int id, HttpServletRequest req) {
+
+	public ResultData delete(int id, HttpServletRequest req) {
 		if (id == 0) {
 			return new ResultData("F-1", "id를 입력해주세요.");
 		}
 		Reply reply = replyDao.getReply(id);
-		if(reply == null) {
+		if (reply == null) {
 			return new ResultData("F-3", "댓글이 존재하지 않습니다.");
 		}
 		Article article = articleDao.getArticle(reply.getRelId());
-		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		if (article == null) {
 			return new ResultData("F-2", "게시글이 존재하지 않습니다.");
 		}
-		
-		ResultData actorCanDeleteRd = actorCan(article,reply, loginedMemberId);
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+
+		ResultData actorCanDeleteRd = actorCan(article, reply, loginedMemberId);
 		if (actorCanDeleteRd.isFail()) {
 			return actorCanDeleteRd;
 		}
 		replyDao.deleteReply(id);
 		return new ResultData("S-1", "댓글이 삭제되었습니다.", "id", id);
 	}
+
+	public ResultData modify(Map<String, Object> param, HttpServletRequest req) {
+		int id = Integer.parseInt(param.get("id").toString());
+		if (id == 0) {
+			return new ResultData("F-1", "id를 입력해주세요.");
+		}
+		Reply reply = replyDao.getReply(id);
+		if (reply == null) {
+			return new ResultData("F-3", "댓글이 존재하지 않습니다.");
+		}
+		Article article = articleDao.getArticle(reply.getRelId());
+		if (article == null) {
+			return new ResultData("F-2", "게시글이 존재하지 않습니다.");
+		}
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		if (param.get("body") == null) {
+			return new ResultData("F-4", "수정 할 내용이 없습니다");
+		}
+		ResultData actorCanModifyRd = actorCan(article, reply, loginedMemberId);
+		if (actorCanModifyRd.isFail()) {
+			return actorCanModifyRd;
+		}
+
+		replyDao.modifyReply(param);
+		return new ResultData("S-1", "댓글이 수정되었습니다.", "id", id);
+	}
+
 	private ResultData actorCan(Article article, Reply reply, int actorId) {
-		if(article.getMemberId() == actorId){
+		if (article.getMemberId() == actorId) {
 			return new ResultData("S-1", "가능합니다.");
 		}
 		if (reply.getMemberId() == actorId) {
@@ -93,6 +115,5 @@ public class ReplyService {
 		}
 		return new ResultData("F-1", "권한이 없습니다.");
 	}
-
 
 }

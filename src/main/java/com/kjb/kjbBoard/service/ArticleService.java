@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.kjb.kjbBoard.dao.ArticleDao;
 import com.kjb.kjbBoard.dto.Article;
 import com.kjb.kjbBoard.dto.Board;
-import com.kjb.kjbBoard.dto.Reply;
 import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.util.Util;
 
