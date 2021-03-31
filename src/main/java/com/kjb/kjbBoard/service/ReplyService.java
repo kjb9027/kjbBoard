@@ -3,6 +3,7 @@ package com.kjb.kjbBoard.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class ReplyService {
 	private ReplyDao replyDao;
 	@Autowired
 	private ArticleDao articleDao;
+	@Autowired
+	private MemberService memberService;
 	
 	public ResultData getForPrintReplies(String relTypeCode, Integer relId) {
 		if (relId == null) {
@@ -38,8 +41,8 @@ public class ReplyService {
 		System.out.println(replies);
 		return new ResultData("S-1", "댓글리스트" ,"replies" ,replies);
 	}
-	public ResultData addReply(Map<String, Object> param, HttpSession session) {
-		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
+	public ResultData addReply(Map<String, Object> param, HttpServletRequest req) {
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		param.put("memberId", loginedMemberId);
 		if (param.get("articleId") == null) {
 			return new ResultData("F-1", "articleId를 입력해주세요.");
@@ -50,6 +53,45 @@ public class ReplyService {
 		replyDao.addReply(param);
 		int id = Util.getAsInt(param.get("id"), 0);
 		return new ResultData("S-1", "게시글이 작성되었습니다.", "id", id);
+	}
+	
+	
+	
+	
+	
+	
+	public ResultData deleteReply(int id, HttpServletRequest req) {
+		if (id == 0) {
+			return new ResultData("F-1", "id를 입력해주세요.");
+		}
+		Reply reply = replyDao.getReply(id);
+		if(reply == null) {
+			return new ResultData("F-3", "댓글이 존재하지 않습니다.");
+		}
+		Article article = articleDao.getArticle(reply.getRelId());
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+		if (article == null) {
+			return new ResultData("F-2", "게시글이 존재하지 않습니다.");
+		}
+		
+		ResultData actorCanDeleteRd = actorCan(article,reply, loginedMemberId);
+		if (actorCanDeleteRd.isFail()) {
+			return actorCanDeleteRd;
+		}
+		replyDao.deleteReply(id);
+		return new ResultData("S-1", "댓글이 삭제되었습니다.", "id", id);
+	}
+	private ResultData actorCan(Article article, Reply reply, int actorId) {
+		if(article.getMemberId() == actorId){
+			return new ResultData("S-1", "가능합니다.");
+		}
+		if (reply.getMemberId() == actorId) {
+			return new ResultData("S-2", "가능합니다.");
+		}
+		if (memberService.isAdmin(actorId)) {
+			return new ResultData("S-3", "가능합니다.");
+		}
+		return new ResultData("F-1", "권한이 없습니다.");
 	}
 
 

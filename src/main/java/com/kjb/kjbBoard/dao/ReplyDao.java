@@ -10,8 +10,13 @@ import com.kjb.kjbBoard.dto.Reply;
 
 @Mapper
 public interface ReplyDao {
+	Reply getReply(@Param("id") int id);
+
 	List<Reply> getForPrintReplies(@Param("relTypeCode") String relTypeCode, @Param("relId") Integer relId);
 
 	void addReply(Map<String, Object> param);
+
+	void deleteReply(int id);
+
 
 }

@@ -2,6 +2,7 @@ package com.kjb.kjbBoard.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,19 +35,19 @@ public class UsrArticleController {
 
 	@RequestMapping("usr/article/doAdd")
 	@ResponseBody
-	public ResultData doAdd(@RequestParam Map<String, Object> param, HttpSession session) {
-		return articleServise.add(param, session);
+	public ResultData doAdd(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		return articleServise.add(param, req);
 	}
 	
 	@RequestMapping("usr/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(int id, HttpSession session) {
-		return articleServise.delete(id, session);
+	public ResultData doDelete(int id, HttpServletRequest req) {
+		return articleServise.delete(id, req);
 	}
 
 	@RequestMapping("usr/article/doModify")
 	@ResponseBody
-	public ResultData doModify(@RequestParam Map<String, Object> param, HttpSession session) {
-		return articleServise.modify(param, session);
+	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		return articleServise.modify(param, req);
 	}
 }

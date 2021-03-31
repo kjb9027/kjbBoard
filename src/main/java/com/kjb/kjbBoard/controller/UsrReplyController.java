@@ -2,6 +2,7 @@ package com.kjb.kjbBoard.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.service.ReplyService;
 
 @Controller
-public class usrReplyController {
+public class UsrReplyController {
 	@Autowired
 	private ReplyService replyService;
 	
@@ -24,10 +25,16 @@ public class usrReplyController {
 		return replyService.getForPrintReplies(relTypeCode, relId);
 	}
 	
-	@RequestMapping("usr/reply/doAddReply")
+	@RequestMapping("usr/reply/doAdd")
 	@ResponseBody
-	public ResultData doAddReply(@RequestParam Map<String, Object> param, HttpSession session) {
-		return replyService.addReply(param, session);
+	public ResultData doAddReply(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+		return replyService.addReply(param, req);
+	}
+	@RequestMapping("usr/reply/doDelete")
+	@ResponseBody
+	public ResultData doDeleteReply(int id, HttpServletRequest req) {
+		System.out.println(id);
+		return replyService.deleteReply(id, req);
 	}
 	
 }

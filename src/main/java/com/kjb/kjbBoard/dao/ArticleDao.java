@@ -11,25 +11,25 @@ import com.kjb.kjbBoard.dto.Board;
 
 @Mapper
 public interface ArticleDao {
-	public Article getArticle(@Param(value = "id") int id);
+	public Article getArticle(@Param("id") int id);
 	
-	public Article getForPrintArticle(@Param(value = "id") int id);
+	public Article getForPrintArticle(@Param("id") int id);
 
 	public List<Article> getForPrintArticles(
-			@Param(value = "keyword") String keyword,
-			@Param(value = "keywordType") String keywordType, 
-			@Param(value = "limitStart") int limitStart, 
-			@Param(value = "limitTake") int limitTake,
-			@Param(value = "boardId") int boardId);
+			@Param("keyword") String keyword,
+			@Param("keywordType") String keywordType, 
+			@Param("limitStart") int limitStart, 
+			@Param("limitTake") int limitTake,
+			@Param("boardId") int boardId);
 
 	public void addArticle(Map<String,Object> param);
 
 	public void deleteArticle(
-			@Param(value = "id") int id);
+			@Param("id") int id);
 
 	public void modifyArticle(Map<String, Object> param);
 
-	public Board getBoard(@Param(value = "boardId") int boardId);
+	public Board getBoard(@Param("boardId") int boardId);
 
 	public void addReply(Map<String, Object> param);
 

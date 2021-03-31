@@ -3,6 +3,7 @@ package com.kjb.kjbBoard.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,8 @@ public class ArticleService {
 		return new ResultData("S-1", "리스트 출력 성공", "articles", articles);
 	}
 
-	public ResultData add(Map<String, Object> param, HttpSession session) {
-		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
+	public ResultData add(Map<String, Object> param, HttpServletRequest req) {
+		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
 		if (param.get("title") == null) {
 			return new ResultData("F-1", "title을 입력해주세요.");
 		}
@@ -81,9 +82,9 @@ public class ArticleService {
 		return new ResultData("S-1", "게시글이 작성되었습니다.", "id", id);
 	}
 
-	public ResultData delete(int id, HttpSession session) {
+	public ResultData delete(int id, HttpServletRequest req) {
 		Article article = getArticle(id);
-		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
+		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
 		if (article == null) {
 			return new ResultData("F-4", "게시글이 존재하지 않습니다.");
 		}
@@ -98,10 +99,10 @@ public class ArticleService {
 		return new ResultData("S-1", "게시글이 삭제되었습니다.", "id", id);
 	}
 
-	public ResultData modify(Map<String, Object> param, HttpSession session) {
-		int id = Util.getAsInt(param.get("id"), 0);
+	public ResultData modify(Map<String, Object> param, HttpServletRequest req) {
+		int id = (int)param.get("id");
 		Article article = getArticle(id);
-		int loginedMemberId = Util.getAsInt(session.getAttribute("loginedMemberId"), 0);
+		int loginedMemberId = Util.getAsInt(req.getAttribute("loginedMemberId"), 0);
 		if (article == null) {
 			return new ResultData("F-4", "게시글이 존재하지 않습니다.");
 		}

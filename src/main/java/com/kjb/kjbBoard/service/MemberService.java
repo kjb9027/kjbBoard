@@ -2,6 +2,7 @@ package com.kjb.kjbBoard.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +70,11 @@ public class MemberService {
 		return new ResultData("S-1", "로그아웃되었습니다.");
 	}
 
-	public ResultData modifyMember(Map<String, Object> param, HttpSession session) {
+	public ResultData modifyMember(Map<String, Object> param, HttpServletRequest req) {
 		if (param.isEmpty()) {
 			return new ResultData("F-2", "수정 할 정보를 입력해주세요.");
 		}
-		int loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		param.put("id", loginedMemberId);
 		memberDao.modifyMember(param);
 		return new ResultData("S-1", "회원정보가 수정되었습니다.");
