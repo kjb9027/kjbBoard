@@ -98,9 +98,9 @@ public class ArticleService {
 	}
 
 	public ResultData modify(Map<String, Object> param, HttpServletRequest req) {
-		int id = (int)param.get("id");
+		int id = Integer.parseInt(param.get("id").toString());
 		Article article = getArticle(id);
-		int loginedMemberId = Util.getAsInt(req.getAttribute("loginedMemberId"), 0);
+		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
 		if (article == null) {
 			return new ResultData("F-4", "게시글이 존재하지 않습니다.");
 		}

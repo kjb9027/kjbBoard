@@ -51,6 +51,7 @@
 		INSERT INTO article
 		SET regDate = NOW(),
 		updateDate = NOW(),
+		boardId = #{boardId},
 		memberId = #{memberId},
 		title = #{title},
 		body = #{body}
@@ -62,8 +63,11 @@
 	<update id="modifyArticle">
 		UPDATE article
 		<set>
-			<if test="title != null or body != null">
+			<if test="title != null or body != null or boardId != null">
 				updateDate = NOW(),
+			</if>
+			<if test="boardId != null">
+				boardId = #{boardId},
 			</if>
 			<if test="title != null">
 				title = #{title},
