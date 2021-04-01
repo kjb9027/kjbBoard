@@ -15,6 +15,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Qualifier("beforeActionInterceptor")
 	HandlerInterceptor beforeActionInterceptor;
 
+	// needAdminInterceptor 인터셉터 불러오기
+	@Autowired
+	@Qualifier("needAdminInterceptor")
+	HandlerInterceptor needAdminInterceptor;
+
 	// needLoginInterceptor 인터셉터 불러오기
 	@Autowired
 	@Qualifier("needLoginInterceptor")
@@ -24,26 +29,29 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Autowired
 	@Qualifier("needLogoutInterceptor")
 	HandlerInterceptor needLogoutInterceptor;
-	
-	// needAdminInterceptor 인터셉터 불러오기
-	@Autowired
-	@Qualifier("needAdminInterceptor")
-	HandlerInterceptor needAdminInterceptor;
 
 	// 이 함수는 인터셉터를 적용하는 역할을 합니다.
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		// beforeActionInterceptor 인터셉터가 모든 액션 실행전에 실행되도록 처리
 		registry.addInterceptor(beforeActionInterceptor)
-				.addPathPatterns("/**").excludePathPatterns("/resource/**")
-				.excludePathPatterns("/gen/**");
+		.addPathPatterns("/**")
+		.excludePathPatterns("/resource/**")
+		.excludePathPatterns("/gen/**");
+		// 관리자 권한 필요
+		registry.addInterceptor(needAdminInterceptor)
+		.addPathPatterns("/adm/**")
+				// 이 url은 인터셉터가 확인하지 않아도 됨
+				.excludePathPatterns("/adm/member/login")
+				.excludePathPatterns("/adm/member/doLogin")
+				.excludePathPatterns("/adm/member/join")
+				.excludePathPatterns("/adm/member/doJoin");
 
 		// 로그인 필요
 		registry.addInterceptor(needLoginInterceptor)
-				.addPathPatterns("/usr/**")
-				//이 url은 인터셉터가 확인하지 않아도 됨
-				.excludePathPatterns("/")
-				.excludePathPatterns("/adm/**")
+		.addPathPatterns("/usr/**")
+				// 이 url은 인터셉터가 확인하지 않아도 됨
+				.excludePathPatterns("/").excludePathPatterns("/adm/**")
 				.excludePathPatterns("/resource/**")
 				.excludePathPatterns("/usr/home/**")
 				.excludePathPatterns("/usr/member/login")
@@ -60,25 +68,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/common/**")
 				.excludePathPatterns("/usr/file/test*")
 				.excludePathPatterns("/usr/file/doTest*")
-				.excludePathPatterns("/test/**")
-				.excludePathPatterns("/error");
-		
-		// 관리자 권한 필요
-		registry.addInterceptor(needAdminInterceptor)
-				.addPathPatterns("/adm/**")
-				//이 url은 인터셉터가 확인하지 않아도 됨
-				.excludePathPatterns("/adm/member/login")
-				.excludePathPatterns("/adm/member/doLogin")
-				.excludePathPatterns("/adm/member/join")
-				.excludePathPatterns("/adm/member/doJoin");
+				.excludePathPatterns("/test/**").excludePathPatterns("/error");
 
 		// 로그인 상태에서 접속할 수 없는 URI 전부 기술
 		registry.addInterceptor(needLogoutInterceptor)
-				.addPathPatterns("/adm/member/login")
-				.addPathPatterns("/adm/member/doLogin")
-				.addPathPatterns("/usr/member/login")
-				.addPathPatterns("/usr/member/doLogin")
-				.addPathPatterns("/usr/member/join")
-				.addPathPatterns("/usr/member/doJoin");
+		.addPathPatterns("/adm/member/login")
+		.addPathPatterns("/adm/member/doLogin")
+		.addPathPatterns("/usr/member/login")
+		.addPathPatterns("/usr/member/doLogin")
+		.addPathPatterns("/usr/member/join")
+		.addPathPatterns("/usr/member/doJoin");
 	}
 }
