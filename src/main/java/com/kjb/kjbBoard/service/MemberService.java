@@ -19,12 +19,13 @@ public class MemberService {
 	private MemberDao memberDao;
 
 	public ResultData joinMember(Map<String, Object> param) {
+		System.out.println(param);
 		if (param.get("loginId") == null) {
 			return new ResultData("F-1", "id을 입력해주세요.");
 		}
 		Member existMember = memberDao.getMemberByLoginId(param.get("loginId").toString());
 		if (existMember != null) {
-			return new ResultData("F-2", String.format("%s (은)는 이미 사용중인 아이디 입니다.", existMember.getId()));
+			return new ResultData("F-2", String.format("%s (은)는 이미 사용중인 아이디 입니다.", existMember.getLoginId()));
 		}
 		if (param.get("loginPw") == null) {
 			return new ResultData("F-1", "pw를 입력해주세요.");

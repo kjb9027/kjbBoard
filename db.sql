@@ -147,3 +147,14 @@ WHERE relTypeCode='';
 -- insert into reply(regDate, updateDate, relTypeCode, relId, memberId, body)
 -- select now(), now(), 'article', floor(rand()*226)+1,floor(rand()*3)+1, concat('내용_',floor(rand()*1000)+1)
 -- from reply;
+
+# autoKey 컬럼 추가
+alter table member add column autoKey char(130) not null after loginPw;
+
+# 기존 회원의 autoKey 데이터 수정
+update member
+set autoKey = concat('autoKey_',uuid(),'_',rand());
+
+# autoKey에 유니크 인덱스 추가
+ALTER TABLE member 
+ADD UNIQUE INDEX autoKey_UNIQUE (`autoKey`);

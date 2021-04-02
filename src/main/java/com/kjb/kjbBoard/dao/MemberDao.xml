@@ -12,7 +12,8 @@
 		name = #{name},
 		nickName = #{nickName},
 		phoneNo = #{phoneNo},
-		email = #{email}
+		email = #{email},
+		autoKey = CONCAT('autoKey__',UUID(),'__',RAND())
 	</insert>
 	<select id="getMember" resultType="Member">
 		SELECT * FROM member WHERE id = #{id}
