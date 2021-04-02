@@ -38,6 +38,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		.addPathPatterns("/**")
 		.excludePathPatterns("/resource/**")
 		.excludePathPatterns("/gen/**");
+		
 		// 관리자 권한 필요
 		registry.addInterceptor(needAdminInterceptor)
 		.addPathPatterns("/adm/**")
