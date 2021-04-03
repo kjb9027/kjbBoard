@@ -21,6 +21,9 @@
 	<select id="getMemberByLoginId" resultType="Member">
 		SELECT * FROM member WHERE loginId = #{loginId}
 	</select>
+	<select id="getMemberByAutoKey" resultType="Member">
+		SELECT * FROM member WHERE autoKey = #{autoKey}
+	</select>
 	<update id="modifyMember">
 		UPDATE member
 		<set>

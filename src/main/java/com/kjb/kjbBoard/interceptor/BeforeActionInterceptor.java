@@ -19,19 +19,33 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
-		HttpSession session = request.getSession();
+		Member loginedMember = null;
+		int loginedMemberId = 0;
 
+		String autoKey = request.getParameter("autoKey");
+		if (autoKey != null && autoKey.length() > 0) {
+			loginedMember = memberService.getMemberByAutoKey(autoKey);
+			if (loginedMember == null) {
+				request.setAttribute("autoKeyStatus", "invalid");// 유효하지않다
+			} else {
+				request.setAttribute("autoKeyStatus", "valid");// 유효하다
+				loginedMemberId= loginedMember.getId();
+			}
+		} else {
+			HttpSession session = request.getSession();
+			request.setAttribute("autoKeyStatus", "none");
+			if(session.getAttribute("loginedMemberId") != null) {
+				loginedMemberId = (int) session.getAttribute("loginedMemberId");
+				loginedMember = memberService.getMember(loginedMemberId);
+			}
+		}
+		
 		// 로그인 여부에 관련된 정보를 request에 담는다.
 		boolean isLogined = false;
 		boolean isAdmin = false;
-		int loginedMemberId = 0;
-		Member loginedMember = null;
 
-		if (session.getAttribute("loginedMemberId") != null) {
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		if (loginedMember != null) {
 			isLogined = true;
-			loginedMember = memberService.getMember(loginedMemberId);
 			isAdmin = memberService.isAdmin(loginedMemberId);
 		}
 

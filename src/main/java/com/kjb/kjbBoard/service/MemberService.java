@@ -89,4 +89,8 @@ public class MemberService {
 		return actorId == 1;
 	}
 
+	public Member getMemberByAutoKey(String autoKey) {
+		return memberDao.getMemberByAutoKey(autoKey);
+	}
+
 }
