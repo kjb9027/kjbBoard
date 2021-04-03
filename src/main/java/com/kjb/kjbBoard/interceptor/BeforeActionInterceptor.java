@@ -22,18 +22,18 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		Member loginedMember = null;
 		int loginedMemberId = 0;
 
-		String autoKey = request.getParameter("autoKey");
-		if (autoKey != null && autoKey.length() > 0) {
-			loginedMember = memberService.getMemberByAutoKey(autoKey);
+		String authKey = request.getParameter("authKey");
+		if (authKey != null && authKey.length() > 0) {
+			loginedMember = memberService.getMemberByauthKey(authKey);
 			if (loginedMember == null) {
-				request.setAttribute("autoKeyStatus", "invalid");// 유효하지않다
+				request.setAttribute("authKeyStatus", "invalid");// 유효하지않다
 			} else {
-				request.setAttribute("autoKeyStatus", "valid");// 유효하다
+				request.setAttribute("authKeyStatus", "valid");// 유효하다
 				loginedMemberId= loginedMember.getId();
 			}
 		} else {
 			HttpSession session = request.getSession();
-			request.setAttribute("autoKeyStatus", "none");
+			request.setAttribute("authKeyStatus", "none");
 			if(session.getAttribute("loginedMemberId") != null) {
 				loginedMemberId = (int) session.getAttribute("loginedMemberId");
 				loginedMember = memberService.getMember(loginedMemberId);

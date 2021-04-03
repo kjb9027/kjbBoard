@@ -13,7 +13,7 @@
 		nickName = #{nickName},
 		phoneNo = #{phoneNo},
 		email = #{email},
-		autoKey = CONCAT('autoKey__',UUID(),'__',RAND())
+		authKey = CONCAT('authKey__',UUID(),'__',RAND())
 	</insert>
 	<select id="getMember" resultType="Member">
 		SELECT * FROM member WHERE id = #{id}
@@ -21,8 +21,8 @@
 	<select id="getMemberByLoginId" resultType="Member">
 		SELECT * FROM member WHERE loginId = #{loginId}
 	</select>
-	<select id="getMemberByAutoKey" resultType="Member">
-		SELECT * FROM member WHERE autoKey = #{autoKey}
+	<select id="getMemberByauthKey" resultType="Member">
+		SELECT * FROM member WHERE authKey = #{authKey}
 	</select>
 	<update id="modifyMember">
 		UPDATE member

@@ -18,6 +18,42 @@ public class MemberService {
 	@Autowired
 	private MemberDao memberDao;
 
+	public ResultData showAuthKey(Map<String, Object> param) {
+		if (param.get("loginId") == null) {
+			return new ResultData("F-1", "id을 입력해주세요.");
+		}
+		if (param.get("loginPw") == null) {
+			return new ResultData("F-1", "pw를 입력해주세요.");
+		}
+		Member existMember = memberDao.getMemberByLoginId(param.get("loginId").toString());
+		if (existMember == null) {
+			return new ResultData("F-2", "존재하지 않는 로그인아이디 입니다.", "loginId", param.get("loginId"));
+		}
+		if (existMember.getLoginPw().equals(param.get("loginPw")) == false) {
+			return new ResultData("F-3", "비밀번호가 일치하지 않습니다.");
+		}
+		return new ResultData("S-1",
+				String.format("%s님 환영합니다", existMember.getNickName()), "authKey", existMember.getAuthKey());
+	}
+
+	public ResultData loginMember(Map<String, Object> param, HttpSession session) {
+		if (param.get("loginId") == null) {
+			return new ResultData("F-1", "id을 입력해주세요.");
+		}
+		if (param.get("loginPw") == null) {
+			return new ResultData("F-1", "pw를 입력해주세요.");
+		}
+		Member existMember = memberDao.getMemberByLoginId(param.get("loginId").toString());
+		if (existMember == null) {
+			return new ResultData("F-2", "존재하지 않는 로그인아이디 입니다.", "loginId", param.get("loginId"));
+		}
+		if (existMember.getLoginPw().equals(param.get("loginPw")) == false) {
+			return new ResultData("F-3", "비밀번호가 일치하지 않습니다.");
+		}
+		session.setAttribute("loginedMemberId", existMember.getId());
+		return new ResultData("S-1", String.format("%s님 환영합니다", existMember.getNickName()));
+	}
+
 	public ResultData joinMember(Map<String, Object> param) {
 		System.out.println(param);
 		if (param.get("loginId") == null) {
@@ -48,24 +84,6 @@ public class MemberService {
 		return new ResultData("S-1", String.format("%s님 환영합니다", param.get("nickName")), "id", id);
 	}
 
-	public ResultData loginMember(Map<String, Object> param, HttpSession session) {
-		if (param.get("loginId") == null) {
-			return new ResultData("F-1", "id을 입력해주세요.");
-		}
-		if (param.get("loginPw") == null) {
-			return new ResultData("F-1", "pw를 입력해주세요.");
-		}
-		Member existMember = memberDao.getMemberByLoginId(param.get("loginId").toString());
-		if (existMember == null) {
-			return new ResultData("F-2", "존재하지 않는 로그인아이디 입니다.", "loginId", param.get("loginId"));
-		}
-		if (existMember.getLoginPw().equals(param.get("loginPw")) == false) {
-			return new ResultData("F-3", "비밀번호가 일치하지 않습니다.");
-		}
-		session.setAttribute("loginedMemberId", existMember.getId());
-		return new ResultData("S-1", String.format("%s님 환영합니다", existMember.getNickName()));
-	}
-
 	public ResultData logoutMember(HttpSession session) {
 		session.removeAttribute("loginedMemberId");
 		return new ResultData("S-1", "로그아웃되었습니다.");
@@ -89,8 +107,8 @@ public class MemberService {
 		return actorId == 1;
 	}
 
-	public Member getMemberByAutoKey(String autoKey) {
-		return memberDao.getMemberByAutoKey(autoKey);
+	public Member getMemberByauthKey(String authKey) {
+		return memberDao.getMemberByauthKey(authKey);
 	}
 
 }

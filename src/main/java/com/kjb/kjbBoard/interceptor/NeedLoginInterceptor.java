@@ -20,11 +20,11 @@ public class NeedLoginInterceptor implements HandlerInterceptor {
 		boolean isAjax = true;
 
 		if (isLogined == false) {
-			String autoKeyStatus = request.getAttribute("autoKeyStatus").toString();
+			String authKeyStatus = request.getAttribute("authKeyStatus").toString();
 			String resultCode = "F-A";
 			String resultMsg = "로그인 후 이용해주세요.";
 			
-			if(autoKeyStatus.equals("invalid")) {
+			if(authKeyStatus.equals("invalid")) {
 				resultCode = "F-B";
 				resultMsg = "인증키가 올바르지 않습니다.";
 			}
