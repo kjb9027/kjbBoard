@@ -32,8 +32,23 @@ public class MemberService {
 		if (existMember.getLoginPw().equals(param.get("loginPw")) == false) {
 			return new ResultData("F-3", "비밀번호가 일치하지 않습니다.");
 		}
-		return new ResultData("S-1",
-				String.format("%s님 환영합니다", existMember.getNickName()), "authKey", existMember.getAuthKey());
+		return new ResultData("S-1", String.format("%s님 환영합니다", existMember.getNickName()), "authKey",
+				existMember.getAuthKey(), "id", existMember.getId(), "name", existMember.getName(), "nickName",
+				existMember.getNickName());
+	}
+
+	public ResultData showMemberByAuthKey(String authKey) {
+		if (authKey == null) {
+			return new ResultData("F-1", "authKey를 입력해주세요.");
+		}
+		Member existMember = memberDao.getMemberByAuthKey(authKey);
+		if(existMember==null) {
+			return new ResultData("F-2", "유효하지 않은 authKey입니다.");
+			
+		}
+		return new ResultData("S-1", "유효한 회원입니다.", "authKey",
+				existMember.getAuthKey(), "id", existMember.getId(), "name", existMember.getName(), "nickName",
+				existMember.getNickName());
 	}
 
 	public ResultData loginMember(Map<String, Object> param, HttpSession session) {
@@ -107,8 +122,8 @@ public class MemberService {
 		return actorId == 1;
 	}
 
-	public Member getMemberByauthKey(String authKey) {
-		return memberDao.getMemberByauthKey(authKey);
+	public Member getMemberByAuthKey(String authKey) {
+		return memberDao.getMemberByAuthKey(authKey);
 	}
 
 }

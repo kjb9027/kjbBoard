@@ -21,7 +21,7 @@
 	<select id="getMemberByLoginId" resultType="Member">
 		SELECT * FROM member WHERE loginId = #{loginId}
 	</select>
-	<select id="getMemberByauthKey" resultType="Member">
+	<select id="getMemberByAuthKey" resultType="Member">
 		SELECT * FROM member WHERE authKey = #{authKey}
 	</select>
 	<update id="modifyMember">

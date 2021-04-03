@@ -24,7 +24,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 
 		String authKey = request.getParameter("authKey");
 		if (authKey != null && authKey.length() > 0) {
-			loginedMember = memberService.getMemberByauthKey(authKey);
+			loginedMember = memberService.getMemberByAuthKey(authKey);
 			if (loginedMember == null) {
 				request.setAttribute("authKeyStatus", "invalid");// 유효하지않다
 			} else {
