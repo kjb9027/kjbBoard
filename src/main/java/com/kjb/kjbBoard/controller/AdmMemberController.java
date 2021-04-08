@@ -21,13 +21,13 @@ public class AdmMemberController {
 
 	@RequestMapping("adm/member/doLogin")
 	@ResponseBody
-	public ResultData doLogin(@RequestParam Map<String, Object> param, HttpSession session) {
+	public String doLogin(@RequestParam Map<String, Object> param, HttpSession session) {
 		return adminService.loginMember(param, session);
 	}
 
 	@RequestMapping("adm/member/doModify")
 	@ResponseBody
-	public ResultData doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
+	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {
 		return adminService.modifyMember(param, req);
 	}
 }
