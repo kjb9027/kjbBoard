@@ -1,0 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ include file="../part/head.jspf"%>
+<header class="top-bar h-20 bg-white">
+	<div class="container mx-auto h-full flex">
+			<a href="#" class="logo flex items-center ml-3">
+				<span>
+					<i class="fas fa-book-open"></i>
+				</span> 
+				<span>KJBBOARD ADMIN</span>
+			</a>
+			<div class="flex-grow"></div>
+			<nav class="menu-box-1">
+			<ul class="h-full flex">
+				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="#">관리자 홈</a></li>
+				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="#">게시판관리</a></li>
+				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="#">게시물관리</a></li>
+			</ul>
+			</nav>
+	</div>
+</header>
