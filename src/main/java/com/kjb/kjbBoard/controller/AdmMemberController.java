@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.service.AdminService;
 
 @Controller
@@ -24,7 +23,11 @@ public class AdmMemberController {
 	public String doLogin(@RequestParam Map<String, Object> param, HttpSession session) {
 		return adminService.loginMember(param, session);
 	}
-
+	@RequestMapping("adm/member/doLogout")
+	@ResponseBody
+	public String doLogout(HttpSession session) {
+		return adminService.logoutMember(session);
+	}
 	@RequestMapping("adm/member/doModify")
 	@ResponseBody
 	public String doModify(@RequestParam Map<String, Object> param, HttpServletRequest req) {

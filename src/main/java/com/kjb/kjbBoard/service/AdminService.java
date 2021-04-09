@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.kjb.kjbBoard.dao.MemberDao;
 import com.kjb.kjbBoard.dto.Member;
-import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.util.Util;
 
 @Service
@@ -56,6 +55,11 @@ public class AdminService {
 
 	public boolean isAdmin(int actorId) {
 		return actorId == 1;
+	}
+
+	public String logoutMember(HttpSession session) {
+		session.removeAttribute("loginedMemberId");
+		return Util.msgAndReplace("로그아웃되었습니다.","../member/login");
 	}
 
 }
