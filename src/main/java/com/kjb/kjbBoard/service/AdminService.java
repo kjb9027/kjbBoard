@@ -29,14 +29,18 @@ public class AdminService {
 			return Util.msgAndBack("존재하지 않는 로그인아이디 입니다.");
 		}
 		if (existMember.getLoginPw().equals(param.get("loginPw")) == false) {
-			return Util.msgAndBack("F-3");
+			return Util.msgAndBack("비밀번호가 일치하지 않습니다.");
 		}
 		if (isAdmin(existMember.getId()) == false) {
-			return Util.msgAndBack("F-4");
+			return Util.msgAndBack("관리자만 접근할 수 있는 페이지 입니다.");
 		}
 		session.setAttribute("loginedMemberId", existMember.getId());
 		String msg = String.format("%s님 환영합니다", existMember.getNickName());
-		return Util.msgAndReplace(msg, "../home/main");
+		String redierctUrl = param.get("redirectUrl").toString();
+		if (redierctUrl == null) {
+			redierctUrl = "../home/main";
+		}
+		return Util.msgAndReplace(msg, redierctUrl);
 	}
 
 	public String modifyMember(Map<String, Object> param, HttpServletRequest req) {
@@ -46,7 +50,7 @@ public class AdminService {
 		int loginedMemberId = (int) req.getAttribute("loginedMemberId");
 		param.put("id", loginedMemberId);
 		memberDao.modifyMember(param);
-		return Util.msgAndReplace("회원정보가 수정되었습니다.","../home/main");
+		return Util.msgAndReplace("회원정보가 수정되었습니다.", "../home/main");
 	}
 
 	public Member getMember(int loginedMemberId) {
@@ -59,7 +63,7 @@ public class AdminService {
 
 	public String logoutMember(HttpSession session) {
 		session.removeAttribute("loginedMemberId");
-		return Util.msgAndReplace("로그아웃되었습니다.","../member/login");
+		return Util.msgAndReplace("로그아웃되었습니다.", "../member/login");
 	}
 
 }

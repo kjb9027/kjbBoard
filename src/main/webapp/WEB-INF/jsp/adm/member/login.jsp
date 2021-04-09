@@ -38,6 +38,7 @@
 			<form class="" action="doLogin" method="post"
 				onsubmit="login_checkAndSubmit(this); return false;">
 				<div class="flex flex-col md-4 md:flex-row">
+					<input type="hidden" name="redirectUrl" value="${param.redirectUrl}">
 					<div class="p-1 md:w-36 md:flex md:items-center">
 						<span>아이디</span>
 					</div>
