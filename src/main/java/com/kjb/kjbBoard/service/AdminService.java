@@ -37,9 +37,7 @@ public class AdminService {
 		session.setAttribute("loginedMemberId", existMember.getId());
 		String msg = String.format("%s님 환영합니다", existMember.getNickName());
 		String redierctUrl = param.get("redirectUrl").toString();
-		if (redierctUrl == null) {
-			redierctUrl = "../home/main";
-		}
+		redierctUrl = Util.ifEmpty(redierctUrl, "../home/main").toString();
 		return Util.msgAndReplace(msg, redierctUrl);
 	}
 

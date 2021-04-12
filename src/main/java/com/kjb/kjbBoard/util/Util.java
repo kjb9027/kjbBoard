@@ -8,13 +8,13 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kjb.kjbBoard.dto.ResultData;
 
 public class Util {
 	public static String getNowDateStr() {
@@ -114,5 +114,46 @@ public class Util {
 		} catch (UnsupportedEncodingException e) {
 			return str;
 		}
+	}
+
+	public static Object ifNull(Object data, Object defaultValue) {
+		return data != null ? data : defaultValue;
+	}
+
+	public static Object reqAttr(HttpServletRequest request, String attrName, Object defaultValue) {
+		return ifNull(request.getAttribute(attrName), defaultValue);
+	}
+
+	public static boolean isEmpty(Object data) {
+		if(data == null) {
+			return true;
+		}
+		
+		if(data instanceof String) {
+			String strData = (String)data;
+			if(strData.trim().length()==0) {
+				return true;
+			}
+		}
+		else if(data instanceof Integer) {
+			Integer integerData = (Integer)data;
+			return integerData != 0;
+		}
+		else if(data instanceof List) {
+			List listData = (List)data;
+			return listData.size() == 0;
+		}
+		else if(data instanceof Map) {
+			Map mapData = (Map)data;
+			return mapData.size() == 0;
+		}
+		return false;
+	}
+
+	public static Object ifEmpty(Object data, Object defaultValue) {
+		if(isEmpty(data)) {
+			return defaultValue;
+		}
+		return data;
 	}
 }
