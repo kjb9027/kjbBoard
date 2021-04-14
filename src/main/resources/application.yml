@@ -8,7 +8,7 @@ spring:
     #driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     #url: jdbc:mysql://192.168.0.11:3306/kjbBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
-    url: jdbc:log4jdbc:mysql://192.168.0.11:3306/kjbBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull    username: kjb
+    url: jdbc:log4jdbc:mysql://192.168.0.6:3306/kjbBoard?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull    username: kjb
     password: 8325
 mybatis: 
   type-aliases-package: com.kjb.kjbBoard.dto

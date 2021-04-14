@@ -15,18 +15,24 @@
 	</select>
 	<select id="getForPrintArticle" resultType="Article">
 		SELECT a.*,
-        IFNULL(m.nickName,"탈퇴회원") AS extra__writer
+        IFNULL(m.nickName,"탈퇴회원") AS extra__writer,
+        b.name AS extra__boardName
 		FROM article AS a
 		LEFT JOIN member AS m
 		ON a.memberId = m.id
+		LEFT JOIN board AS b
+		ON a.boardId = b.id
 		WHERE a.id = #{id}
 	</select>
 	<select id="getForPrintArticles" resultType="Article">
 		SELECT a.*,
-        IFNULL(m.nickName,"탈퇴회원") AS extra__writer
+        IFNULL(m.nickName,"탈퇴회원") AS extra__writer,
+        b.name AS extra__boardName
 		FROM article AS a
 		LEFT JOIN member AS m
 		ON a.memberId = m.id
+		LEFT JOIN board AS b
+		ON a.boardId = b.id
 		WHERE 1
 		<if test="keyword != null">
 			<if test="keywordType == 'title'">

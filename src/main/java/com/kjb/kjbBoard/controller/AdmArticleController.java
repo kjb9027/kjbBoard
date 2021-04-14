@@ -18,29 +18,30 @@ import com.kjb.kjbBoard.dto.ResultData;
 import com.kjb.kjbBoard.service.ArticleService;
 
 @Controller
-public class AdmArticleController extends BaseController{
+public class AdmArticleController extends BaseController {
 	@Autowired
 	private ArticleService articleService;
 
 	@RequestMapping("adm/article/detail")
 	public String showDetail(HttpServletRequest request, Integer id) {
+		System.out.println(id);
 		if (id == null) {
 			return msgAndBack(request, "id를 입력해주세요.");
 		}
 		Article article = articleService.getForPrintArticle(id);
 		if (article == null) {
 			return msgAndBack(request, "게시글이 존재하지 않습니다.");
-		}else {
+		} else {
 			request.setAttribute("article", article);
 		}
 		return "adm/article/detail";
 	}
 
 	@RequestMapping("adm/article/list")
-	public String showList(HttpServletRequest request,String keywordType, String keyword, @RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "1") int boardId, Model model) {
+	public String showList(HttpServletRequest request, String keywordType, String keyword,
+			@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "1") int boardId, Model model) {
 		Board board = articleService.getBoard(boardId);
-		if(board == null) {
+		if (board == null) {
 			return msgAndBack(request, "존재하지 않는 게시판입니다.");
 		}
 		if (keywordType != null) {
@@ -58,20 +59,21 @@ public class AdmArticleController extends BaseController{
 		if (keyword == null) {
 			keywordType = null;
 		}
-		//page : 몇 페이지를 노출 시킬것인지
-		//itemsInAPage : 몇 개씩 노출 시킬것인지
-		
+		// page : 몇 페이지를 노출 시킬것인지
+		// itemsInAPage : 몇 개씩 노출 시킬것인지
+
 		int itemsInAPage = 20;
 		int limitStart = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
-		List<Article> articles = articleService.getForPrintArticles(keywordType,keyword, limitStart, limitTake, boardId);
+		List<Article> articles = articleService.getForPrintArticles(keywordType, keyword, limitStart, limitTake,
+				boardId);
 		request.setAttribute("articles", articles);
 		return "adm/article/list";
 	}
 
 	@RequestMapping("adm/article/doAdd")
 	@ResponseBody
-	public ResultData doAdd(HttpServletRequest request,@RequestParam Map<String, Object> param) {
+	public ResultData doAdd(HttpServletRequest request, @RequestParam Map<String, Object> param) {
 		int loginedMemberId = (int) request.getAttribute("loginedMemberId");
 		if (param.get("title") == null) {
 			return new ResultData("F-1", "title을 입력해주세요.");
@@ -85,13 +87,14 @@ public class AdmArticleController extends BaseController{
 
 	@RequestMapping("adm/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(HttpServletRequest request,int id, HttpServletRequest req) {
+	public ResultData doDelete(HttpServletRequest request, int id, HttpServletRequest req) {
 		return articleService.delete(id, req);
 	}
 
 	@RequestMapping("adm/article/doModify")
 	@ResponseBody
-	public ResultData doModify(HttpServletRequest request,@RequestParam Map<String, Object> param, HttpServletRequest req) {
+	public ResultData doModify(HttpServletRequest request, @RequestParam Map<String, Object> param,
+			HttpServletRequest req) {
 		return articleService.modify(param, req);
 	}
 }
