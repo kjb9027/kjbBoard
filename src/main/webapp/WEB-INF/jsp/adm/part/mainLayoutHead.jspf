@@ -15,7 +15,7 @@
 				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="/usr/home/main">홈</a></li>
 				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="/adm/home/main">관리자 홈</a></li>
 				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="/adm/board/list">게시판관리</a></li>
-				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="/adm/article/list">게시물관리</a></li>
+				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="/adm/article/list?boardId=1">게시물관리</a></li>
 				<li><a class="h-full flex items-center text-xl p-4 hover:underline" href="/adm/member/doLogout">관리자 로그아웃</a></li>
 			</ul>
 			</nav>

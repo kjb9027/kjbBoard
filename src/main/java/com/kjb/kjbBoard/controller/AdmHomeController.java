@@ -9,6 +9,10 @@ public class AdmHomeController {
 	public String login() {
 		return "adm/member/login";
 	}
+	@RequestMapping("adm/article/write")
+	public String write() {
+		return "adm/article/write";
+	}
 	@RequestMapping("adm/home/main")
 	public String main() {
 		return "adm/home/main";
