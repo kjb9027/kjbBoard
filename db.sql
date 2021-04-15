@@ -5,11 +5,11 @@ USE kjbBoard;
 
 # 게시물 테이블 생성
 CREATE TABLE article (
-    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    title VARCHAR(100) NOT NULL,
-    body TEXT NOT NULL
+id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+title VARCHAR(100) NOT NULL,
+body TEXT NOT NULL
 );
 
 # 게시물, 테스트 데이터 생성
@@ -33,15 +33,15 @@ body = "내용3 입니다.";
 
 # 회원 테이블 생성
 CREATE TABLE member (
-    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    loginId VARCHAR(40) NOT NULL,
-    loginPw VARCHAR(100) NOT NULL,
-    name VARCHAR(30) NOT NULL,
-    nickName VARCHAR(30) NOT NULL,
-	phoneNo VARCHAR(20) NOT NULL,
-    email VARCHAR(100) NOT NULL
+id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+loginId VARCHAR(40) NOT NULL,
+loginPw VARCHAR(100) NOT NULL,
+name VARCHAR(30) NOT NULL,
+nickName VARCHAR(30) NOT NULL,
+phoneNo VARCHAR(20) NOT NULL,
+email VARCHAR(100) NOT NULL
 );
 
 # 로그인 ID로 검색했을 때
@@ -158,3 +158,25 @@ set autoKey = concat('autoKey_',uuid(),'_',rand());
 # autoKey에 유니크 인덱스 추가
 ALTER TABLE member 
 ADD UNIQUE INDEX autoKey_UNIQUE (`autoKey`);
+
+# 파일 테이블 추가
+CREATE TABLE genFile (
+id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, # 번호
+regDate DATETIME DEFAULT NULL, # 작성날짜
+updateDate DATETIME DEFAULT NULL, # 갱신날짜
+delDate DATETIME DEFAULT NULL, # 삭제날짜
+delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, # 삭제상태(0:미삭제,1:삭제)
+relTypeCode VARCHAR(50) NOT NULL, # 관련 데이터 타입(article, member)
+relId INT(10) UNSIGNED NOT NULL, # 관련 데이터 번호
+originFileName VARCHAR(100) NOT NULL, # 업로드 당시의 파일이름
+fileExt CHAR(10) NOT NULL, # 확장자
+typeCode CHAR(20) NOT NULL, # 종류코드 (common)
+type2Code CHAR(20) NOT NULL, # 종류2코드 (attatchment)
+fileSize INT(10) UNSIGNED NOT NULL, # 파일의 사이즈
+fileExtTypeCode VARCHAR(10) NOT NULL, # 파일규격코드(img, video)
+fileExtType2Code VARCHAR(10) NOT NULL, # 파일규격2코드(jpg, mp4)
+fileNo SMALLINT(2) UNSIGNED NOT NULL, # 파일번호 (1)
+fileDir VARCHAR(20) NOT NULL, # 파일이 저장되는 폴더명
+PRIMARY KEY (id),
+KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
+);
